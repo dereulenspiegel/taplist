@@ -5,8 +5,10 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
+	"github.com/dereulenspiegel/go-brewchild"
 	"github.com/dereulenspiegel/taplist/graph/generated"
 	"github.com/dereulenspiegel/taplist/graph/model"
 )
@@ -28,7 +30,41 @@ func (r *queryResolver) Taps(ctx context.Context) ([]*model.Tap, error) {
 }
 
 func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([]*model.BrewfatherBatch, error) {
-	panic(fmt.Errorf("not implemented"))
+	if r.brewfatherClient == nil {
+		return nil, errors.New("Brewfather is unconfigured")
+	}
+	var err error
+	var batches []*brewchild.Batch
+	if state != nil && *state != "" {
+		batches, err = r.brewfatherClient.Batches(brewchild.Status(*state), brewchild.Complete(true))
+	} else {
+		batches, err = r.brewfatherClient.Batches(brewchild.Complete(true))
+	}
+	if err != nil {
+		return nil, err
+	}
+	tb := make([]*model.BrewfatherBatch, len(batches))
+	for i, b := range batches {
+		ebc := int(b.EstimatedColor)
+		gravityUnit := "SG"
+		tb[i] = &model.BrewfatherBatch{
+			ID:    fmt.Sprintf("brewfather:%d", b.BatchNumber),
+			State: &b.Status,
+			Beer: &model.Beer{
+				ID:          fmt.Sprintf("brewfather:%d", b.BatchNumber),
+				Name:        b.Name,
+				Abv:         b.MeasuredABV,
+				BuGuRatio:   &b.BuGuRatio,
+				Ibu:         &b.IBU,
+				ColorEbc:    &ebc,
+				Og:          &b.OG,
+				Fg:          &b.FG,
+				GravityUnit: &gravityUnit,
+			},
+		}
+	}
+
+	return tb, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/dereulenspiegel/taplist/graph/model"
+import (
+	"github.com/dereulenspiegel/go-brewchild"
+	"github.com/dereulenspiegel/taplist/graph/model"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -12,11 +15,13 @@ type Store interface {
 }
 
 type Resolver struct {
-	store Store
+	store            Store
+	brewfatherClient *brewchild.Client
 }
 
-func NewResolver(str Store) *Resolver {
+func NewResolver(str Store, brewchildClient *brewchild.Client) *Resolver {
 	return &Resolver{
-		store: str,
+		store:            str,
+		brewfatherClient: brewchildClient,
 	}
 }

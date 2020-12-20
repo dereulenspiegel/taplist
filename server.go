@@ -12,6 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/dereulenspiegel/go-brewchild"
 	"github.com/dereulenspiegel/taplist/filestore"
 	"github.com/dereulenspiegel/taplist/graph"
 	"github.com/dereulenspiegel/taplist/graph/generated"
@@ -65,8 +66,19 @@ func main() {
 
 	fsStore := filestore.New(viper.GetString("kegerator.name"), viper.GetInt("num.taps"))
 
+	brewfatherUserID := viper.GetString("brewfather.userid")
+	brewfatherSecret := viper.GetString("brewfather.secret")
+
+	var bfClient *brewchild.Client
+	if brewfatherSecret != "" && brewfatherUserID != "" {
+		logrus.Info("Enabling Brewfather support")
+		bfClient, err = brewchild.New(brewfatherUserID, brewfatherSecret)
+	} else {
+		logrus.Info("Brewfather credentials unconfigured")
+	}
+
 	mux := http.NewServeMux()
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: graph.NewResolver(fsStore)}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: graph.NewResolver(fsStore, bfClient)}))
 	mux.Handle("/query", srv)
 	mux.Handle("/playground", playground.Handler("GraphQL playground", "/query"))
 	httpServer := &http.Server{
