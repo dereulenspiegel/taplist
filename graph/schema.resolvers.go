@@ -86,9 +86,9 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 	var err error
 	var batches []*brewchild.Batch
 	if state != nil && *state != "" {
-		batches, err = r.brewfatherClient.Batches(brewchild.Status(*state), brewchild.Complete(true))
+		batches, err = r.brewfatherClient.Batches(brewchild.Status(*state), brewchild.Complete(true), brewchild.Limit(50))
 	} else {
-		batches, err = r.brewfatherClient.Batches(brewchild.Complete(true))
+		batches, err = r.brewfatherClient.Batches(brewchild.Complete(true), brewchild.Limit(50))
 	}
 	if err != nil {
 		return nil, err
@@ -97,24 +97,25 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 	for i, b := range batches {
 		ebc := int(b.EstimatedColor)
 		gravityUnit := "SG"
+		buGuRatio := b.GetBuGuRatio()
+		ibu := b.GetIBU()
+		abv := b.GetABV()
+		og := b.GetOG()
+		fg := b.GetFG()
 		tb[i] = &model.BrewfatherBatch{
 			ID:    fmt.Sprintf("brewfather:%d", b.BatchNumber),
 			State: &b.Status,
 			Beer: &model.Beer{
 				ID:          fmt.Sprintf("brewfather:%d", b.BatchNumber),
 				Name:        b.Name,
-				Abv:         b.MeasuredABV,
-				BuGuRatio:   &b.BuGuRatio,
-				Ibu:         &b.IBU,
+				Abv:         abv,
+				BuGuRatio:   &buGuRatio,
+				Ibu:         &ibu,
 				ColorEbc:    &ebc,
-				Og:          &b.OG,
-				Fg:          &b.FG,
+				Og:          &og,
+				Fg:          &fg,
 				GravityUnit: &gravityUnit,
 			},
-		}
-
-		if tb[i].Beer.Abv > 0.1 {
-			tb[i].Beer.Abv = b.ABV
 		}
 
 	}
