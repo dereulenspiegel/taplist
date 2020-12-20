@@ -43,6 +43,8 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dereulenspiegel/go-brewchild v0.0.0-20201205135842-70570d63c2d9 h1:FxsjEPk5cRKI3WAod91djwzEHLff9Uqim8NaeqIwfAo=
 github.com/dereulenspiegel/go-brewchild v0.0.0-20201205135842-70570d63c2d9/go.mod h1:9vxSex0zvPWJnulfQgt4+LFHnA0NPPccFW0XSmYyFaw=
+github.com/dereulenspiegel/go-brewchild v0.0.0-20201220135206-586845c0cabf h1:vctNF+Eg22yKHNc1QzyN6x2ntgoJR6cG3+AmqvM7UMA=
+github.com/dereulenspiegel/go-brewchild v0.0.0-20201220135206-586845c0cabf/go.mod h1:9vxSex0zvPWJnulfQgt4+LFHnA0NPPccFW0XSmYyFaw=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/dgryski/trifles v0.0.0-20190318185328-a8d75aae118c/go.mod h1:if7Fbed8SFyPtHLHbg49SI7NAdJiC5WIA09pe59rfAA=
