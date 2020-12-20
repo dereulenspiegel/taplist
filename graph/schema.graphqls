@@ -1,0 +1,92 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Sensor {
+  id: ID!
+  type: SensorType!
+  name: String!
+  value: Float!
+  unit: String!
+}
+
+enum SensorType {
+  TEMP_ROOM
+  TEMP_KEGERATOR
+  TEMP_TAP
+  HUMIDITY_ROOM
+  HUMIDTY_KEGERATOR
+  PRESSURE_TAP
+  FLOWRATE_TAP
+}
+
+type Beer {
+  id: ID!
+  name: String!
+  abv: Float!
+  buGuRatio: Float
+  ibu: Int
+  colorEbc: Int
+  og: Float
+  fg: Float
+  gravityUnit: String
+}
+
+type Tap {
+  id: ID!
+  number: Int!
+  empty: Boolean!
+  volumeAvailable: Float
+  percentAvailable: Float
+  name: String!
+  sensors: [Sensor!]!
+  beer: Beer!
+}
+
+type Kegerator {
+  name: String
+  sensors: [Sensor!]!
+  taps: [Tap!]!
+}
+
+type BrewfatherBatch {
+  id: ID!
+  state: String
+  beer: Beer!
+}
+
+type Query {
+  kegerator: Kegerator!
+  taps: [Tap!]!
+  brewfatherBatches(state: String): [BrewfatherBatch!]! @hasRole(role: ADMIN)
+}
+
+input BeerData {
+  name: String!
+  abv: Float!
+  buGuRatio: Float
+  ibu: Int
+  colorEbc: Int
+  og: Float
+  fg: Float
+  gravityUnit: String
+}
+
+input TapData {
+  empty: Boolean!
+  volumeAvailable: Float
+  percentAvailable: Float
+  name: String
+  beer: BeerData
+}
+
+type Mutation {
+  updateTap(id: ID!, data: TapData!): Tap! @hasRole(role: ADMIN)
+  setBrewfatherBatchOnTap(tapId: ID!, brewfatherBatchID: ID!): Tap! @hasRole(role: ADMIN)
+}
+
+enum Role {
+  ADMIN
+}
+
+directive @hasRole(role: Role!) on FIELD_DEFINITION
