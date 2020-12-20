@@ -43,7 +43,7 @@ func main() {
 	setDefaults()
 	flag.Parse()
 
-	viper.SetEnvPrefix("BG")
+	viper.SetEnvPrefix("TAPLIST")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
