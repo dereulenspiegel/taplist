@@ -12,7 +12,10 @@ GO_TEST                 = $(GO_ENV) go test -cover -v
 
 .PHONY: clean build test gql-generate
 
-taplist:
+gql-generate:
+	gqlgen generate
+
+taplist: gql-generate
 	$(GO_BUILD)
 
 build: taplist
