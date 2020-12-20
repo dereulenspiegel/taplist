@@ -19,6 +19,7 @@ import (
 	"github.com/dereulenspiegel/taplist/graph"
 	"github.com/dereulenspiegel/taplist/graph/generated"
 	"github.com/dereulenspiegel/taplist/graph/model"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -27,8 +28,14 @@ var (
 	defaultHttpTimeout = time.Second * 10
 )
 
+var Version = "undefined"
+
+const (
+	frontendPath = "./frontend"
+)
+
 var (
-	Version = "undefined"
+	frontendBox = packr.New("Frontend", frontendPath)
 )
 
 type ContextKey string
@@ -97,6 +104,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(graphqlConf))
+	mux.Handle("/", http.FileServer(frontendBox))
 	mux.Handle("/query", srv)
 	mux.Handle("/playground", playground.Handler("GraphQL playground", "/query"))
 	httpServer := &http.Server{
