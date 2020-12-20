@@ -68,11 +68,7 @@ func (r *mutationResolver) UpdateTap(ctx context.Context, id string, data model.
 }
 
 func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID string, brewfatherBatchID string) (*model.Tap, error) {
-	pref, batchID := extractID(brewfatherBatchID)
-	if pref != "brewfather" {
-		return nil, fmt.Errorf("Invalid brewfather ID")
-	}
-	batch, err := r.brewfatherClient.Batch(batchID)
+	batch, err := r.brewfatherClient.Batch(brewfatherBatchID)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to get batch from brewfather: %w", err)
 	}
@@ -138,7 +134,7 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 		og := b.GetOG()
 		fg := b.GetFG()
 		tb[i] = &model.BrewfatherBatch{
-			ID:    fmt.Sprintf("brewfather:%d", b.BatchNumber),
+			ID:    b.ID,
 			State: &b.Status,
 			Beer: &model.Beer{
 				ID:          fmt.Sprintf("brewfather:%d", b.BatchNumber),
