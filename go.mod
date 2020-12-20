@@ -6,7 +6,10 @@ require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/dereulenspiegel/go-brewchild v0.0.0-20201220140139-330e4d4c2ecf
 	github.com/jinzhu/copier v0.1.0
+	github.com/magiconair/properties v1.8.1
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/viper v1.7.1
+	github.com/stretchr/testify v1.6.1
 	github.com/vektah/gqlparser/v2 v2.1.0
+	gotest.tools v2.2.0+incompatible
 )

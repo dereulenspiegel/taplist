@@ -68,7 +68,42 @@ func (r *mutationResolver) UpdateTap(ctx context.Context, id string, data model.
 }
 
 func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID string, brewfatherBatchID string) (*model.Tap, error) {
-	panic(fmt.Errorf("not implemented"))
+	pref, batchID := extractID(brewfatherBatchID)
+	if pref != "brewfather" {
+		return nil, fmt.Errorf("Invalid brewfather ID")
+	}
+	batch, err := r.brewfatherClient.Batch(batchID)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get batch from brewfather: %w", err)
+	}
+	tap, err := r.store.Tap(tapID)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to query tap to update: %w", err)
+	}
+
+	tap.Empty = false
+	tap.Name = batch.Name
+	buGuRatio := batch.GetBuGuRatio()
+	ibu := batch.GetIBU()
+	og := batch.GetOG()
+	fg := batch.GetFG()
+	color := int(batch.EstimatedColor)
+	gravityUnit := "SG"
+	tap.Beer = &model.Beer{
+		ID:          fmt.Sprintf("brewfather:%d", batch.BatchNumber),
+		Name:        batch.Name,
+		Abv:         batch.GetABV(),
+		BuGuRatio:   &buGuRatio,
+		Ibu:         &ibu,
+		ColorEbc:    &color,
+		Og:          &og,
+		Fg:          &fg,
+		GravityUnit: &gravityUnit,
+	}
+	if err := r.store.UpdateTap(tap); err != nil {
+		return nil, fmt.Errorf("Failed to update tap: %w", err)
+	}
+	return tap, nil
 }
 
 func (r *queryResolver) Kegerator(ctx context.Context) (*model.Kegerator, error) {
