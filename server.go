@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,12 +11,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/dereulenspiegel/go-brewchild"
 	"github.com/dereulenspiegel/taplist/filestore"
 	"github.com/dereulenspiegel/taplist/graph"
 	"github.com/dereulenspiegel/taplist/graph/generated"
+	"github.com/dereulenspiegel/taplist/graph/model"
 	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/viper"
@@ -29,11 +32,19 @@ var (
 	Version = "undefined"
 )
 
+type ContextKey string
+
+const (
+	CtxAuthUser ContextKey = "auth-user"
+)
+
 func setDefaults() {
 	viper.SetDefault("kegerator.name", "My Smart Kegerator")
 	viper.SetDefault("num.taps", 2)
 	viper.SetDefault("http.addr", ":8088")
 	viper.SetDefault("log.level", logrus.InfoLevel.String())
+	viper.SetDefault("no.auth", false)
+	viper.SetDefault("http.user.header", "X-Auth-User")
 }
 
 func main() {
@@ -77,13 +88,20 @@ func main() {
 		logrus.Info("Brewfather credentials unconfigured")
 	}
 
+	graphqlConf := generated.Config{
+		Resolvers: graph.NewResolver(fsStore, bfClient),
+		Directives: generated.DirectiveRoot{
+			HasRole: HasRole,
+		},
+	}
+
 	mux := http.NewServeMux()
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: graph.NewResolver(fsStore, bfClient)}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(graphqlConf))
 	mux.Handle("/query", srv)
 	mux.Handle("/playground", playground.Handler("GraphQL playground", "/query"))
 	httpServer := &http.Server{
 		Addr:              viper.GetString("http.addr"),
-		Handler:           mux,
+		Handler:           checkUserHeader(mux),
 		ReadTimeout:       defaultHttpTimeout,
 		ReadHeaderTimeout: defaultHttpTimeout,
 		WriteTimeout:      defaultHttpTimeout,
@@ -106,4 +124,29 @@ func main() {
 		defer cancel()
 		httpServer.Shutdown(ctx)
 	}
+}
+
+func checkUserHeader(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if headerVal := r.Header.Get(viper.GetString("http.user.header")); headerVal != "" {
+			ctx := context.WithValue(r.Context(), CtxAuthUser, headerVal)
+			r = r.WithContext(ctx)
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func HasRole(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error) {
+	if viper.GetBool("no.auth") {
+		return next(ctx)
+	}
+
+	if val := ctx.Value(CtxAuthUser); val != nil {
+		if user, ok := val.(string); ok {
+			if user == viper.GetString("admin.user") {
+				next(ctx)
+			}
+		}
+	}
+	return nil, fmt.Errorf("Access denied")
 }
