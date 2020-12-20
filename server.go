@@ -20,7 +20,6 @@ import (
 	"github.com/dereulenspiegel/taplist/graph/generated"
 	"github.com/dereulenspiegel/taplist/graph/model"
 	"github.com/sirupsen/logrus"
-
 	"github.com/spf13/viper"
 )
 
@@ -45,6 +44,7 @@ func setDefaults() {
 	viper.SetDefault("log.level", logrus.InfoLevel.String())
 	viper.SetDefault("no.auth", false)
 	viper.SetDefault("http.user.header", "X-Auth-User")
+	viper.SetDefault("data.path", "./data/data.json")
 }
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 		"kegeratorName": viper.GetString("kegerator.name"),
 	}).Info("Starting Taplist")
 
-	fsStore := filestore.New(viper.GetString("kegerator.name"), viper.GetInt("num.taps"))
+	fsStore := filestore.New(viper.GetString("data.path"), viper.GetString("kegerator.name"), viper.GetInt("num.taps"))
 
 	brewfatherUserID := viper.GetString("brewfather.userid")
 	brewfatherSecret := viper.GetString("brewfather.secret")

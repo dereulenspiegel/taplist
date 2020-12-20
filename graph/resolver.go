@@ -12,6 +12,8 @@ import (
 type Store interface {
 	Taps() ([]*model.Tap, error)
 	Kegerator() (*model.Kegerator, error)
+	Tap(id string) (*model.Tap, error)
+	UpdateTap(tap *model.Tap) error
 }
 
 type Resolver struct {
