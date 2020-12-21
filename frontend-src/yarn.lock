@@ -1039,6 +1039,13 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@brewlab/calc@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@brewlab/calc/-/calc-0.3.0.tgz#ceed7c0add0599c202599cb16371323890d83d15"
+  integrity sha512-eZw8at2loI2seWWhq65sKBTkHWlWf8CoKdsrdU6WpmtrzefI2jQWFQN6pw6AT37GByT6anE+JQtkKfJLFaM6DQ==
+  dependencies:
+    core-js "^3.6.4"
+
 "@endemolshinegroup/cosmiconfig-typescript-loader@^1.0.0":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@endemolshinegroup/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-1.0.2.tgz#c1eadbb4c269f7898195ca8f7428bf5f5d1c449a"
@@ -4355,7 +4362,7 @@ core-js-compat@^3.6.5, core-js-compat@^3.8.0:
     browserslist "^4.15.0"
     semver "7.0.0"
 
-core-js@^3.0.1, core-js@^3.4.0, core-js@^3.6.5:
+core-js@^3.0.1, core-js@^3.4.0, core-js@^3.6.4, core-js@^3.6.5:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.8.1.tgz#f51523668ac8a294d1285c3b9db44025fda66d47"
   integrity sha512-9Id2xHY1W7m8hCl8NkhQn5CufmF/WuR30BTRewvCXc1aZd3kMECwNZ69ndLbekKfakw9Rf2Xyc+QR6E7Gg+obg==

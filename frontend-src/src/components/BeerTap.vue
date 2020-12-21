@@ -5,7 +5,7 @@
         <div class="tile is-child">
           <!-- Beer Image -->
           <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
-          <BeerPint v-else width="150px" ebc="0" />
+          <BeerPint v-else width="150px" ebc="0"/>
         </div>
       </div>
 
