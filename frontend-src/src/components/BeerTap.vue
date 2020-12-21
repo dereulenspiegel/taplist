@@ -10,7 +10,7 @@
 
       <div class="tile is-vertical is-parent">
         <div class="tile is-child">
-          {{beer.name}}
+          {{tap.number}}
         </div>
         <div v-if="hasFacts" class="tile is-child">
           Beer Facts 1
@@ -27,14 +27,14 @@
 export default {
   name: 'BeerTap',
   props: {
-    beer: Object
+    tap: Object
   },
   computed: {
     hasFacts: function() {
-      return this.beer.og || this.beer.abv || this.beer.buGuRation || this.beer.ibu
+      return this.tap.beer.og || this.tap.beer.abv || this.tap.beer.buGuRation || this.tap.beer.ibu
     },
     hasSensorData: function() {
-      return this.beer.sensors && this.beer.sensors.length > 0
+      return this.tap.sensors && this.tap.sensors.length > 0
     }
   }
 }

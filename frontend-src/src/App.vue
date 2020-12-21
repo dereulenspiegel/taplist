@@ -1,10 +1,10 @@
 <template>
   <section class="hero is-fullheight">
     <div class="hero-head">
-      <h3 class="title">Kegerator</h3>
+      <h3 class="title">{{kegerator.name}}</h3>
     </div>
     <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-align-content-space-evenly hero-body">
-      <BeerTap v-for="beer in beers" :key="beer.id" v-bind:beer="beer"/>
+      <BeerTap v-for="tap in kegerator.taps" :key="tap.id" v-bind:tap="tap"/>
     </div>
     <div class="hero-foot">
       <p>GitHub: dereulenspiegel/taplist</p>
@@ -14,48 +14,43 @@
 
 <script>
 import BeerTap from './components/BeerTap.vue'
+import gql from 'graphql-tag'
 
 export default {
   name: 'App',
+  apollo: {
+    kegerator: gql`query{
+      kegerator {
+        name
+        taps{
+          id
+          number
+          empty
+          percentAvailable
+          beer{
+            id
+            name
+            abv
+            ibu
+            colorEbc
+            buGuRatio
+            og
+            fg
+            gravityUnit
+          }
+        }
+      }
+      }`
+  },
   components: {
     BeerTap
   },
   data: function(){
     return {
-      beers: [
-        {
-          id: "1",
-          name: 'Beer 1'
-        },
-        {
-          id: "2",
-          name: 'Beer 2'
-        },
-        {
-          id: "3",
-          name: 'Beer 3'
-        },
-        {
-          id: "4",
-          name: 'Beer 4'
-        },
-        {
-          id: "1",
-          name: 'Beer 1'
-        },
-        {
-          id: "2",
-          name: 'Beer 2'
-        },
-        {
-          id: "3",
-          name: 'Beer 3'
-        },
-        {
-          id: "4",
-          name: 'Beer 4'
-        },
-      ]
+      kegerator: {
+        name: 'Unknown',
+        taps: []
+      }
     }
   }
 }
