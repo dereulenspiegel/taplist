@@ -11,7 +11,13 @@ GO_BUILD                = $(GO_ENV) go build -ldflags "$(LDFLAGS)"
 GO_TEST                 = $(GO_ENV) go test -cover -v
 PACKR_CMD								= packr2
 
+VUE_APP_GRAPHQL_HTTP		?= /query
+# VUE_APP_GRAPHQL_WS			?= /query
+
 .PHONY: clean build test gql-generate pack
+
+frontend/index.html:
+	cd frontend-src && VUE_APP_GRAPHQL_HTTP=$(VUE_APP_GRAPHQL_HTTP) VUE_APP_GRAPHQL_WS=$(VUE_APP_GRAPHQL_WS) yarn build
 
 pack:
 	$(PACKR_CMD)
@@ -19,7 +25,7 @@ pack:
 gql-generate:
 	gqlgen generate
 
-taplist: pack gql-generate
+taplist: frontend/index.html pack gql-generate
 	$(GO_BUILD)
 
 build: taplist
@@ -29,5 +35,6 @@ test:
 
 clean: 
 	rm -f ./taplist
+	rm -rf ./frontend/*
 
 rebuild: clean build
