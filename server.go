@@ -66,7 +66,7 @@ func main() {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		logrus.WithError(err).Error("Failed to read configuration")
+		logrus.WithError(err).Warn("Failed to read configuration")
 	}
 	logLevel, err := logrus.ParseLevel(viper.GetString("log.level"))
 	if err != nil {
