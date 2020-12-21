@@ -2,6 +2,7 @@
   "name": "frontend-src",
   "version": "0.1.0",
   "private": true,
+  "module": "main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest ../frontend",

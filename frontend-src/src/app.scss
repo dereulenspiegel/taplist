@@ -1,2 +1,20 @@
 @charset 'UTF-8';
-@import '~bulma';
+
+$black: rgb(0,0,0);
+$white: rgb(255,255,255);
+$body-background-color: $black;
+$text: $white;
+
+$widescreen-enabled: true;
+$fullhd-enabled: true;
+
+@import "~bulma/sass/utilities/_all.sass";
+@import '~bulma/sass/components/media.sass';
+@import '~bulma/sass/elements/container.sass';
+@import '~bulma/sass/elements/content.sass';
+@import '~bulma/sass/elements/title.sass';
+@import '~bulma/sass/grid/_all.sass';
+@import '~bulma/sass/helpers/flexbox.sass';
+@import '~bulma/sass/helpers/overflow.sass';
+@import '~bulma/sass/layout/_all.sass';
+@import '~bulma/sass/base/_all.sass';

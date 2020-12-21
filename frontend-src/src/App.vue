@@ -3,7 +3,7 @@
     <div class="hero-head">
       <h3 class="title">{{kegerator.name}}</h3>
     </div>
-    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-align-content-space-evenly hero-body">
+    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-align-content-stretch hero-body">
       <BeerTap v-for="tap in kegerator.taps" :key="tap.id" v-bind:tap="tap"/>
     </div>
     <div class="hero-foot">
@@ -60,9 +60,8 @@ export default {
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /*-moz-osx-font-smoothing: grayscale;*/
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: white;
 }
 </style>
