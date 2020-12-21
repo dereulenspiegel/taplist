@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     hasFacts: function() {
-      return this.tap.beer.og || this.tap.beer.abv || this.tap.beer.buGuRation || this.tap.beer.ibu
+      return this.tap.beer && (this.tap.beer.og || this.tap.beer.abv || this.tap.beer.buGuRation || this.tap.beer.ibu)
     },
     hasSensorData: function() {
       return this.tap.sensors && this.tap.sensors.length > 0
