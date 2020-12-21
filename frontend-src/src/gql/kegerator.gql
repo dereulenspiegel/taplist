@@ -1,0 +1,22 @@
+query {
+  kegerator {
+    name
+    taps {
+      id
+      number
+      empty
+      percentAvailable
+      beer {
+        id
+        name
+        abv
+        ibu
+        colorEbc
+        buGuRatio
+        og
+        fg
+        gravityUnit
+      }
+    }
+  }
+}

@@ -14,36 +14,20 @@
 
 <script>
 import BeerTap from './components/BeerTap.vue'
-import gql from 'graphql-tag'
+//import gql from 'graphql-tag'
+
+import KEGERATOR_QUERY from './gql/kegerator.gql'
 
 export default {
   name: 'App',
   apollo: {
-    kegerator: gql`query{
-      kegerator {
-        name
-        taps{
-          id
-          number
-          empty
-          percentAvailable
-          beer{
-            id
-            name
-            abv
-            ibu
-            colorEbc
-            buGuRatio
-            og
-            fg
-            gravityUnit
-          }
-        }
-      }
-      }`
+    kegerator: KEGERATOR_QUERY
   },
   components: {
     BeerTap
+  },
+  created: function() {
+    this.timer = setInterval(this.refreshData, 60000)
   },
   data: function(){
     return {
@@ -51,6 +35,14 @@ export default {
         name: 'Unknown',
         taps: []
       }
+    }
+  },
+  methods: {
+    refreshData: function() {
+      this.$apollo.query({
+        query: KEGERATOR_QUERY,
+        update: data => this.kegerator = data
+      })
     }
   }
 }
