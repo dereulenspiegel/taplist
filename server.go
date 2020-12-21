@@ -102,9 +102,16 @@ func main() {
 		},
 	}
 
+	var frontendHandler http.Handler
+	if frontendPath := viper.GetString("frontend.path"); frontendPath != "" {
+		frontendHandler = http.FileServer(http.Dir(frontendPath))
+	} else {
+		frontendHandler = http.FileServer(frontendBox)
+	}
+
 	mux := http.NewServeMux()
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(graphqlConf))
-	mux.Handle("/", http.FileServer(frontendBox))
+	mux.Handle("/", frontendHandler)
 	mux.Handle("/query", srv)
 	mux.Handle("/playground", playground.Handler("GraphQL playground", "/query"))
 	httpServer := &http.Server{

@@ -31,3 +31,4 @@ Taplist is configured via env variables. All variables need to be prefixed with 
 | DATA_PATH | ./data/data.json | no | Where to persist the data about the taplist |
 | BREWFATHER_USERID | | no | If you want to add batches from brewfather to taps, specify your brewfather user id |
 | BREWFATHER_SECRET | | no | Brewfather API secret |
+| FRONTEND_PATH | | no | Use your own frontend instead of the embedded one |
