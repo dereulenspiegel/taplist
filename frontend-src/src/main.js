@@ -1,6 +1,9 @@
-import { createApp } from 'vue'
+import Vue from 'vue'
 import App from './App.vue'
+require('@/app.scss')
 
-require('@/app.scss');
+Vue.config.productionTip = false
 
-createApp(App).mount('#app')
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
