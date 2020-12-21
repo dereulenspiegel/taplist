@@ -18,6 +18,15 @@ type Store struct {
 	kegerator model.Kegerator
 }
 
+func newTap(i int) *model.Tap {
+	return &model.Tap{
+		Number: i + 1,
+		ID:     fmt.Sprintf("tap:%d", i),
+		Empty:  true,
+		Name:   fmt.Sprintf("Tap %d", i+1),
+	}
+}
+
 func New(dataFilePath, kegeratorName string, numberOfTaps int) *Store {
 
 	s := &Store{
@@ -33,11 +42,7 @@ func New(dataFilePath, kegeratorName string, numberOfTaps int) *Store {
 	if tapDiff > 0 {
 		for i := 0; i < tapDiff; i++ {
 			tapNum := i + len(s.kegerator.Taps)
-			s.kegerator.Taps = append(s.kegerator.Taps, &model.Tap{
-				Number: tapNum + 1,
-				ID:     fmt.Sprintf("%d", tapNum),
-				Empty:  true,
-			})
+			s.kegerator.Taps = append(s.kegerator.Taps, newTap(tapNum))
 		}
 	}
 
@@ -48,11 +53,7 @@ func New(dataFilePath, kegeratorName string, numberOfTaps int) *Store {
 		}).Warn("Number of taps was decreased, removing all tap data, because I can't determine which taps are left")
 		s.kegerator.Taps = make([]*model.Tap, numberOfTaps)
 		for i := 0; i < numberOfTaps; i++ {
-			s.kegerator.Taps[i] = &model.Tap{
-				Number: i + 1,
-				ID:     fmt.Sprintf("%d", i),
-				Empty:  true,
-			}
+			s.kegerator.Taps[i] = newTap(i)
 		}
 	}
 

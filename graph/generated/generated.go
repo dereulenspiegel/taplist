@@ -477,7 +477,7 @@ type Tap {
   percentAvailable: Float
   name: String!
   sensors: [Sensor!]!
-  beer: Beer!
+  beer: Beer
 }
 
 type Kegerator {
@@ -1945,14 +1945,11 @@ func (ec *executionContext) _Tap_beer(ctx context.Context, field graphql.Collect
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.Beer)
 	fc.Result = res
-	return ec.marshalNBeer2ᚖgithubᚗcomᚋdereulenspiegelᚋtaplistᚋgraphᚋmodelᚐBeer(ctx, field.Selections, res)
+	return ec.marshalOBeer2ᚖgithubᚗcomᚋdereulenspiegelᚋtaplistᚋgraphᚋmodelᚐBeer(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -3492,9 +3489,6 @@ func (ec *executionContext) _Tap(ctx context.Context, sel ast.SelectionSet, obj 
 			}
 		case "beer":
 			out.Values[i] = ec._Tap_beer(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4247,6 +4241,13 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalOBeer2ᚖgithubᚗcomᚋdereulenspiegelᚋtaplistᚋgraphᚋmodelᚐBeer(ctx context.Context, sel ast.SelectionSet, v *model.Beer) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Beer(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOBeerData2ᚖgithubᚗcomᚋdereulenspiegelᚋtaplistᚋgraphᚋmodelᚐBeerData(ctx context.Context, v interface{}) (*model.BeerData, error) {

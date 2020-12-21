@@ -40,7 +40,7 @@ type Tap {
   percentAvailable: Float
   name: String!
   sensors: [Sensor!]!
-  beer: Beer!
+  beer: Beer
 }
 
 type Kegerator {
