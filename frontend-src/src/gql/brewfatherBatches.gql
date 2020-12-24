@@ -1,6 +1,7 @@
 query {
   brewfatherBatches(state: "Completed") {
     id
+    number
     beer {
       id
       name

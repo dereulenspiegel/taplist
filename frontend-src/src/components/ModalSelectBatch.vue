@@ -5,7 +5,14 @@
       <h2 class="title">Select beer for Tap {{tapNumber}}</h2>
       <ul>
         <li v-for="batch in brewfatherBatches" v-bind:key="batch.id">
-          {{batch.beer.name}}
+          <button class="button is-primary" v-on:click.prevent="selectBatch(batch)">
+            {{batch.number}}: {{batch.beer.name}}
+          </button>
+        </li>
+        <li>
+          <button class="button is-danger" v-on:click.prevent="setEmpty">
+            Empty
+          </button>
         </li>
       </ul>
     </div>
@@ -16,6 +23,7 @@
 <script>
 
 import BREWFATHER_BATCHES_QUERY from '../gql/brewfatherBatches.gql'
+import gql from 'graphql-tag'
 
 export default {
   name: 'ModalSelectBatch',
@@ -30,14 +38,51 @@ export default {
   methods: {
     cancel: function() {
       this.$emit('cancel')
+    },
+    setEmpty: function(){
+      this.$apollo.mutate({
+        mutation: gql`mutation($tapId: ID!, $tapData: TapData!){
+          updateTap(id: $tapId, data: $tapData){ id }
+        }`,
+        variables: {
+          tapId: this.tapId,
+          tapData: {
+            empty: true
+          }
+        }
+      }).then( () => {
+        this.$emit('selected')
+      }).catch((error) => {
+        console.log("Error {}", error)
+      })
+    },
+    selectBatch: function(batch) {
+      this.$apollo.mutate({
+        mutation: gql`mutation($tapId: ID!, $brewfatherId: ID!) {
+          setBrewfatherBatchOnTap(tapId: $tapId, brewfatherBatchID: $brewfatherId) {
+            id
+          }
+        }`,
+        variables:{
+          tapId: this.tapId,
+          brewfatherId: batch.id
+        }
+      }).then( () => {
+        this.$emit('selected', batch);
+      }).catch((error) => {
+        // TODO show error
+        console.log("Error {}", error)
+      })
     }
   }
 }
-</script>#
+</script>
 
 <style scoped>
 .batch-select-modal {
   background-color: white;
   color: black;
+  border-radius: 5px;
+  padding: 20px;
 }
 </style>

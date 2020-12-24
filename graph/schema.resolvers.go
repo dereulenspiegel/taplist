@@ -28,36 +28,40 @@ func (r *mutationResolver) UpdateTap(ctx context.Context, id string, data model.
 	if data.Name != nil {
 		tap.Name = *data.Name
 	}
-	if data.PercentAvailable != nil {
-		tap.PercentAvailable = data.PercentAvailable
-	}
-	if data.VolumeAvailable != nil {
-		tap.VolumeAvailable = data.VolumeAvailable
-	}
-	if data.Beer != nil {
-		if tap.Beer == nil {
-			tap.Beer = &model.Beer{}
+	if !tap.Empty {
+		if data.PercentAvailable != nil {
+			tap.PercentAvailable = data.PercentAvailable
 		}
-		tap.Beer.Abv = data.Beer.Abv
-		tap.Beer.Name = data.Beer.Name
-		if data.Beer.BuGuRatio != nil {
-			tap.Beer.BuGuRatio = data.Beer.BuGuRatio
+		if data.VolumeAvailable != nil {
+			tap.VolumeAvailable = data.VolumeAvailable
 		}
-		if data.Beer.ColorEbc != nil {
-			tap.Beer.ColorEbc = data.Beer.ColorEbc
+		if data.Beer != nil {
+			if tap.Beer == nil {
+				tap.Beer = &model.Beer{}
+			}
+			tap.Beer.Abv = data.Beer.Abv
+			tap.Beer.Name = data.Beer.Name
+			if data.Beer.BuGuRatio != nil {
+				tap.Beer.BuGuRatio = data.Beer.BuGuRatio
+			}
+			if data.Beer.ColorEbc != nil {
+				tap.Beer.ColorEbc = data.Beer.ColorEbc
+			}
+			if data.Beer.Fg != nil {
+				tap.Beer.Fg = data.Beer.Fg
+			}
+			if data.Beer.GravityUnit != nil {
+				tap.Beer.GravityUnit = data.Beer.GravityUnit
+			}
+			if data.Beer.Ibu != nil {
+				tap.Beer.Ibu = data.Beer.Ibu
+			}
+			if data.Beer.Og != nil {
+				tap.Beer.Og = data.Beer.Og
+			}
 		}
-		if data.Beer.Fg != nil {
-			tap.Beer.Fg = data.Beer.Fg
-		}
-		if data.Beer.GravityUnit != nil {
-			tap.Beer.GravityUnit = data.Beer.GravityUnit
-		}
-		if data.Beer.Ibu != nil {
-			tap.Beer.Ibu = data.Beer.Ibu
-		}
-		if data.Beer.Og != nil {
-			tap.Beer.Og = data.Beer.Og
-		}
+	} else {
+		tap.Beer = nil
 	}
 
 	if err := r.store.UpdateTap(tap); err != nil {
@@ -134,8 +138,9 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 		og := b.GetOG()
 		fg := b.GetFG()
 		tb[i] = &model.BrewfatherBatch{
-			ID:    b.ID,
-			State: &b.Status,
+			ID:     b.ID,
+			State:  &b.Status,
+			Number: b.BatchNumber,
 			Beer: &model.Beer{
 				ID:          fmt.Sprintf("brewfather:%d", b.BatchNumber),
 				Name:        b.Name,
@@ -148,9 +153,7 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 				GravityUnit: &gravityUnit,
 			},
 		}
-
 	}
-
 	return tb, nil
 }
 

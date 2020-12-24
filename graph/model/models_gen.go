@@ -33,9 +33,10 @@ type BeerData struct {
 }
 
 type BrewfatherBatch struct {
-	ID    string  `json:"id"`
-	State *string `json:"state"`
-	Beer  *Beer   `json:"beer"`
+	ID     string  `json:"id"`
+	Number int     `json:"number"`
+	State  *string `json:"state"`
+	Beer   *Beer   `json:"beer"`
 }
 
 type Kegerator struct {

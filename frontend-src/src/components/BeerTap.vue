@@ -67,9 +67,9 @@ export default {
     modalCancel: function() {
       this.modal.active = false
     },
-    batchSelected: function(batch) {
+    batchSelected: function() {
       this.modal.active = false
-      console.log('Batch {} selected', batch.id)
+      this.$emit('tapUpdated')
     }
   }
 }

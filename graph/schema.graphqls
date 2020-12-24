@@ -52,6 +52,7 @@ type Kegerator {
 
 type BrewfatherBatch {
   id: ID!
+  number: Int!
   state: String
   beer: Beer!
 }

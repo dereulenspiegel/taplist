@@ -5,7 +5,7 @@
       <h3 class="title">{{kegerator.name}}</h3>
     </div>
     <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-align-content-stretch hero-body">
-      <BeerTap v-for="tap in kegerator.taps" v-bind:key="tap.id" v-bind:tap="tap"/>
+      <BeerTap v-for="tap in kegerator.taps" v-bind:key="tap.id" v-bind:tap="tap" @tapUpdated="refreshData"/>
     </div>
     <div class="hero-foot">
       <p>GitHub: dereulenspiegel/taplist</p>
@@ -21,13 +21,13 @@ import KEGERATOR_QUERY from './gql/kegerator.gql'
 export default {
   name: 'App',
   apollo: {
-    kegerator: KEGERATOR_QUERY
+    kegerator: {
+      query: KEGERATOR_QUERY,
+      pollInterval: 1000,
+    }
   },
   components: {
     BeerTap
-  },
-  created: function() {
-    this.timer = setInterval(this.refreshData, 60000)
   },
   data: function(){
     return {

@@ -59,9 +59,10 @@ type ComplexityRoot struct {
 	}
 
 	BrewfatherBatch struct {
-		Beer  func(childComplexity int) int
-		ID    func(childComplexity int) int
-		State func(childComplexity int) int
+		Beer   func(childComplexity int) int
+		ID     func(childComplexity int) int
+		Number func(childComplexity int) int
+		State  func(childComplexity int) int
 	}
 
 	Kegerator struct {
@@ -209,6 +210,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.BrewfatherBatch.ID(childComplexity), true
+
+	case "BrewfatherBatch.number":
+		if e.complexity.BrewfatherBatch.Number == nil {
+			break
+		}
+
+		return e.complexity.BrewfatherBatch.Number(childComplexity), true
 
 	case "BrewfatherBatch.state":
 		if e.complexity.BrewfatherBatch.State == nil {
@@ -497,6 +505,7 @@ type Kegerator {
 
 type BrewfatherBatch {
   id: ID!
+  number: Int!
   state: String
   beer: Beer!
 }
@@ -1037,6 +1046,41 @@ func (ec *executionContext) _BrewfatherBatch_id(ctx context.Context, field graph
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BrewfatherBatch_number(ctx context.Context, field graphql.CollectedField, obj *model.BrewfatherBatch) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "BrewfatherBatch",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Number, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _BrewfatherBatch_state(ctx context.Context, field graphql.CollectedField, obj *model.BrewfatherBatch) (ret graphql.Marshaler) {
@@ -3280,6 +3324,11 @@ func (ec *executionContext) _BrewfatherBatch(ctx context.Context, sel ast.Select
 			out.Values[i] = graphql.MarshalString("BrewfatherBatch")
 		case "id":
 			out.Values[i] = ec._BrewfatherBatch_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "number":
+			out.Values[i] = ec._BrewfatherBatch_number(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
