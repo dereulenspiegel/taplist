@@ -1,11 +1,12 @@
 <template>
   <div class="tile is-anecstor beertap" style="min-width: 350px">
-    <div class="tile is-horizontal">
+    <modal-select-batch :tapId="tap.id" :tapNumber="tap.number" :active="modal.active" @cancel="modalCancel" @selected="batchSelected"/>
+    <div class="tile is-horizontal" v-on:click.prevent="showModal">
       <div class="tile is-parent">
         <div class="tile is-child">
           <!-- Beer Image -->
           <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
-          <BeerPint v-else width="150px" ebc="0"/>
+          <BeerPint v-else width="150px" ebc="0" />
         </div>
       </div>
 
@@ -33,14 +34,23 @@
 
 <script>
 import BeerPint from './BeerPint.vue'
+import ModalSelectBatch from './ModalSelectBatch.vue'
 
 export default {
   name: 'BeerTap',
   components: {
-    BeerPint
+    BeerPint,
+    ModalSelectBatch
   },
   props: {
     tap: Object
+  },
+  data: function() {
+    return {
+      modal: {
+        active: false,
+      }
+    }
   },
   computed: {
     hasFacts: function() {
@@ -48,6 +58,18 @@ export default {
     },
     hasSensorData: function() {
       return this.tap.sensors && this.tap.sensors.length > 0
+    }
+  },
+  methods: {
+    showModal: function() {
+      this.modal.active = true
+    },
+    modalCancel: function() {
+      this.modal.active = false
+    },
+    batchSelected: function(batch) {
+      this.modal.active = false
+      console.log('Batch {} selected', batch.id)
     }
   }
 }

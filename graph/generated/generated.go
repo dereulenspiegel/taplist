@@ -55,6 +55,7 @@ type ComplexityRoot struct {
 		Ibu         func(childComplexity int) int
 		Name        func(childComplexity int) int
 		Og          func(childComplexity int) int
+		Style       func(childComplexity int) int
 	}
 
 	BrewfatherBatch struct {
@@ -187,6 +188,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Beer.Og(childComplexity), true
+
+	case "Beer.style":
+		if e.complexity.Beer.Style == nil {
+			break
+		}
+
+		return e.complexity.Beer.Style(childComplexity), true
 
 	case "BrewfatherBatch.beer":
 		if e.complexity.BrewfatherBatch.Beer == nil {
@@ -460,6 +468,7 @@ enum SensorType {
 type Beer {
   id: ID!
   name: String!
+  style: String
   abv: Float!
   buGuRatio: Float
   ibu: Int
@@ -734,6 +743,38 @@ func (ec *executionContext) _Beer_name(ctx context.Context, field graphql.Collec
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Beer_style(ctx context.Context, field graphql.CollectedField, obj *model.Beer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Beer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Style, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Beer_abv(ctx context.Context, field graphql.CollectedField, obj *model.Beer) (ret graphql.Marshaler) {
@@ -3196,6 +3237,8 @@ func (ec *executionContext) _Beer(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "style":
+			out.Values[i] = ec._Beer_style(ctx, field, obj)
 		case "abv":
 			out.Values[i] = ec._Beer_abv(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

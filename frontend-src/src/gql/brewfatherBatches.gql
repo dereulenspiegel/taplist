@@ -1,0 +1,17 @@
+query {
+  brewfatherBatches(state: "Completed") {
+    id
+    beer {
+      id
+      name
+      style
+      abv
+      buGuRatio
+      ibu
+      colorEbc
+      og
+      fg
+      gravityUnit
+    }
+  }
+}
