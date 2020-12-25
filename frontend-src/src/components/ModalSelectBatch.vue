@@ -2,15 +2,15 @@
   <div class="modal" v-bind:class="{'is-active': active}">
     <div class="modal-background"></div>
     <div class="modal-content is-clipped batch-select-modal">
-      <h2 class="title">Select beer for Tap {{tapNumber}}</h2>
+      <h2 class="title">Select batch for Tap {{tapNumber}}</h2>
       <ul>
         <li v-for="batch in brewfatherBatches" v-bind:key="batch.id">
-          <button class="button is-primary" v-on:click.prevent="selectBatch(batch)">
-            {{batch.number}}: {{batch.beer.name}}
+          <button class="button is-primary is-large is-fullwidth batch-button" v-on:click.prevent="selectBatch(batch)">
+            Batch {{batch.number}}: {{batch.beer.name}}
           </button>
         </li>
         <li>
-          <button class="button is-danger" v-on:click.prevent="setEmpty">
+          <button class="button is-danger is-large is-fullwidth batch-button" v-on:click.prevent="setEmpty">
             Empty
           </button>
         </li>
@@ -84,5 +84,9 @@ export default {
   color: black;
   border-radius: 5px;
   padding: 20px;
+}
+
+.batch-button {
+  margin: 5px;
 }
 </style>
