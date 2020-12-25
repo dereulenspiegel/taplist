@@ -12,6 +12,7 @@ import (
 	"github.com/dereulenspiegel/taplist/graph/generated"
 	"github.com/dereulenspiegel/taplist/graph/model"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 func (r *mutationResolver) UpdateTap(ctx context.Context, id string, data model.TapData) (*model.Tap, error) {
@@ -99,6 +100,9 @@ func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID st
 		Og:          &og,
 		Fg:          &fg,
 		GravityUnit: &gravityUnit,
+	}
+	if name := viper.GetString("default.brewery"); name != "" {
+		tap.Beer.BreweryName = &name
 	}
 	if err := r.store.UpdateTap(tap); err != nil {
 		return nil, fmt.Errorf("Failed to update tap: %w", err)

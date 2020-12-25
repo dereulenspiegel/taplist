@@ -39,12 +39,13 @@ func New(dataFilePath, kegeratorName string, numberOfTaps int) *Store {
 
 	s.kegerator.Name = &kegeratorName
 	tapDiff := numberOfTaps - len(s.kegerator.Taps)
+	var newTaps []*model.Tap
 	if tapDiff > 0 {
 		for i := 0; i < tapDiff; i++ {
-			tapNum := i + len(s.kegerator.Taps)
-			s.kegerator.Taps = append(s.kegerator.Taps, newTap(tapNum))
+			newTaps = append(newTaps, newTap(i+len(s.kegerator.Taps)))
 		}
 	}
+	s.kegerator.Taps = append(s.kegerator.Taps, newTaps...)
 
 	if tapDiff < 0 {
 		logrus.WithFields(logrus.Fields{

@@ -11,6 +11,7 @@ import (
 type Beer struct {
 	ID          string   `json:"id"`
 	Name        string   `json:"name"`
+	BreweryName *string  `json:"breweryName"`
 	Style       *string  `json:"style"`
 	Abv         float64  `json:"abv"`
 	BuGuRatio   *float64 `json:"buGuRatio"`

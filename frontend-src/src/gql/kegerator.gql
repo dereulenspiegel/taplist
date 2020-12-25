@@ -8,6 +8,7 @@ query {
       percentAvailable
       beer {
         id
+        breweryName
         name
         abv
         ibu

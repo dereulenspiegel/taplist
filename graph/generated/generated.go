@@ -47,6 +47,7 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Beer struct {
 		Abv         func(childComplexity int) int
+		BreweryName func(childComplexity int) int
 		BuGuRatio   func(childComplexity int) int
 		ColorEbc    func(childComplexity int) int
 		Fg          func(childComplexity int) int
@@ -133,6 +134,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Beer.Abv(childComplexity), true
+
+	case "Beer.breweryName":
+		if e.complexity.Beer.BreweryName == nil {
+			break
+		}
+
+		return e.complexity.Beer.BreweryName(childComplexity), true
 
 	case "Beer.buGuRatio":
 		if e.complexity.Beer.BuGuRatio == nil {
@@ -476,6 +484,7 @@ enum SensorType {
 type Beer {
   id: ID!
   name: String!
+  breweryName: String
   style: String
   abv: Float!
   buGuRatio: Float
@@ -752,6 +761,38 @@ func (ec *executionContext) _Beer_name(ctx context.Context, field graphql.Collec
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Beer_breweryName(ctx context.Context, field graphql.CollectedField, obj *model.Beer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Beer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BreweryName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Beer_style(ctx context.Context, field graphql.CollectedField, obj *model.Beer) (ret graphql.Marshaler) {
@@ -3281,6 +3322,8 @@ func (ec *executionContext) _Beer(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "breweryName":
+			out.Values[i] = ec._Beer_breweryName(ctx, field, obj)
 		case "style":
 			out.Values[i] = ec._Beer_style(ctx, field, obj)
 		case "abv":

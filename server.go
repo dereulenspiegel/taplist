@@ -128,7 +128,7 @@ func main() {
 
 	go func() {
 		logrus.WithField("listenAddr", viper.GetString("http.addr")).Info("Listening")
-		if err := httpServer.ListenAndServe(); err != nil {
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logrus.WithError(err).Fatal("Http server failed listening")
 		}
 	}()

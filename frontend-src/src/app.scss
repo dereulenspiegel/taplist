@@ -4,6 +4,7 @@ $black: rgb(0,0,0);
 $white: rgb(255,255,255);
 $body-background-color: $black;
 $text: $white;
+$subtitle-color: $black;
 
 $widescreen-enabled: true;
 $fullhd-enabled: true;
@@ -13,6 +14,7 @@ $fullhd-enabled: true;
 @import '~bulma/sass/elements/container.sass';
 @import '~bulma/sass/elements/content.sass';
 @import '~bulma/sass/elements/button.sass';
+@import '~bulma/sass/elements/box.sass';
 @import '~bulma/sass/elements/title.sass';
 @import '~bulma/sass/grid/_all.sass';
 @import '~bulma/sass/helpers/flexbox.sass';

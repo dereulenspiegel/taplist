@@ -23,6 +23,7 @@ enum SensorType {
 type Beer {
   id: ID!
   name: String!
+  breweryName: String
   style: String
   abv: Float!
   buGuRatio: Float

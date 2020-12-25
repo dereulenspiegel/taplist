@@ -1,32 +1,48 @@
 <template>
-  <div class="tile is-anecstor beertap" style="min-width: 350px">
+  <div class="box tile is-anecstor beertap" style="min-width: 250px">
     <modal-select-batch :tapId="tap.id" :tapNumber="tap.number" :active="modal.active" @cancel="modalCancel" @selected="batchSelected"/>
-    <div class="tile is-horizontal" v-on:click.prevent="showModal">
+    <div class="tile is-vertical" v-on:click.prevent="showModal">
       <div class="tile is-parent">
-        <div class="tile is-child">
-          <!-- Beer Image -->
-          <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
-          <BeerPint v-else width="150px" ebc="0" />
+        <div class="tile is-child" v-if="tap.beer">
+          <h1 class="title">{{tap.beer.name}}</h1>
+          <h2 class="subtitle" v-if="tap.beer.breweryName">{{tap.beer.breweryName}}</h2>
+        </div>
+        <div v-else class="tile is-child">
+          <h1 class="title">Empty</h1>
+          <h2 class="subtitle">Please refill</h2>
         </div>
       </div>
 
-      <div v-if="tap.beer" class="tile is-vertical is-parent">
-        <div class="tile is-child">
-          <h1>Tap {{tap.number}}<h1> {{tap.beer.name}}
+      <div class="tile is-horizontal">
+        <div class="tile is-parent">
+          <div class="tile is-child is-1">
+            <span class="tapnumber">{{tap.number}}</span>
+          </div>
+          <div class="tile is-child is-4">
+            <!-- Beer Image -->
+            <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
+            <BeerPint v-else width="150px" ebc="0" />
+          </div>
         </div>
-        <div v-if="hasFacts" class="tile is-child">
-          <span v-if="tap.beer.abv">ABV: {{tap.beer.abv}} %</span>
-          <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu}} </span>
-          <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio}}</span>
+        
+        <div class="tile is-parent is-vertical is-7" v-if="tap.beer">
+          <div class="tile is-child" v-if="hasFacts">
+            <span v-if="tap.beer.abv">ABV: {{tap.beer.abv}} %</span><br>
+            <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu}} </span><br>
+            <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio}}</span><br>
+          </div>
+
+          <div class="tile is-child is-7" v-if="hasSensorData">
+            Beer sensor data
+          </div>
         </div>
-        <div v-if="hasSensorData" class="tile is-child">
-          Beer sensor data
+
+        <div class="tile is-parent is-vertical" v-else>
+          <div class="tile is-child">
+            <!-- Insert sad smiley -->
+          </div>
         </div>
-      </div>
-      <div v-else class="tile is-vertical is-parent">
-        <div class="tile is-child">
-          <h1>Tap {{tap.number}}</h1> Nothing available
-        </div>
+
       </div>
     </div>
   </div>
@@ -77,9 +93,13 @@ export default {
 
 <style>
 .beertap {
-  color: white;
+  color: black !important;
   margin: 20px;
-  background-color: rgb(39, 39, 39);
-  box-shadow: 5px 10px #161616;
+}
+
+.tapnumber {
+  color: black;
+  font-size: 6em !important;
+  margin: 5px;
 }
 </style>
