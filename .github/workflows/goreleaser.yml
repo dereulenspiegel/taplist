@@ -25,6 +25,7 @@ jobs:
         cd frontend-src
         yarn install
         yarn build
+        cd ..
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
