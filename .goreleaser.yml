@@ -7,33 +7,80 @@ before:
     - go generate ./...
     - packr2
 builds:
-  - env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
-      - windows
-    goarch:
-      - amd64
-      - arm
-      - arm64
-    goarm:
-      - 7
-    ignore:
-      - goos: darwin
-        goarch: arm
-      - goos: windows
-        goarch: arm
-      - goos: windows
-        goarch: arm64
-    ldflags:
-      - -s -w -X main.build={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} 
+- id: main-build
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+    - darwin
+    - windows
+  goarch:
+    - amd64
+    - arm
+    - arm64
+  goarm:
+    - 7
+  ignore:
+    - goos: darwin
+      goarch: arm
+    - goos: windows
+      goarch: arm
+    - goos: windows
+      goarch: arm64
+  ldflags:
+    - -s -w -X main.build={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} 
+dockers:
+- image_templates:
+  - dereulenspiegel/taplist:{{ .Version }}-amd64
+  builds:
+  - main-build
+  binaries:
+  - taplist
+  dockerfile: Dockerfile
+  goarch: amd64
+  goos: linux
+  build_flag_templates:
+  - "--build-arg"
+  - "ARCH=x86_64"
+- image_templates:
+  - dereulenspiegel/taplist:{{ .Version }}-arm64
+  builds:
+  - main-build
+  binaries:
+  - taplist
+  dockerfile: Dockerfile
+  goos: linux
+  goarch: arm64
+  build_flag_templates:
+  - "--build-arg"
+  - "ARCH=arm64"
+- image_templates:
+  - dereulenspiegel/taplist:{{ .Version }}-armv7
+  builds:
+  - main-build
+  binaries:
+  - taplist
+  dockerfile: Dockerfile
+  goos: linux
+  goarch: arm
+  goarm: 7
+  build_flag_templates:
+  - "--build-arg"
+  - "ARCH=arm_7"
+
+docker_manifests:
+- name_template: dereulenspiegel/taplist:{{ .Version }}
+  image_templates:
+  - dereulenspiegel/taplist:{{ .Version }}-amd64
+  - dereulenspiegel/taplist:{{ .Version }}-arm64
+  - dereulenspiegel/taplist:{{ .Version }}-armv7
+
 archives:
-  - replacements:
-      darwin: macOS
-      linux: Linux
-      windows: Windows
-      amd64: x86_64
+- replacements:
+    darwin: macOS
+    linux: Linux
+    windows: Windows
+    amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
