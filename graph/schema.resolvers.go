@@ -101,7 +101,7 @@ func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID st
 		Fg:          &fg,
 		GravityUnit: &gravityUnit,
 	}
-	if name := viper.GetString("default.brewery"); name != "" {
+	if name := viper.GetString("brewfather.brewery"); name != "" {
 		tap.Beer.BreweryName = &name
 	}
 	if err := r.store.UpdateTap(tap); err != nil {

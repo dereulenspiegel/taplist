@@ -32,4 +32,4 @@ Taplist is configured via env variables. All variables need to be prefixed with 
 | BREWFATHER_USERID | | no | If you want to add batches from brewfather to taps, specify your brewfather user id |
 | BREWFATHER_SECRET | | no | Brewfather API secret |
 | FRONTEND_PATH | | no | Use your own frontend instead of the embedded one |
-| DEFAULT_BREWERY| | no | Brewery name to use if tap data comes from brewfather | 
+| BREWFATHER_BREWERY| | no | Brewery name to use if tap data comes from brewfather | 
