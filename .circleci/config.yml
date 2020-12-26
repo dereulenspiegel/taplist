@@ -19,7 +19,7 @@ jobs:
     - restore_cache:
         name: Restore Yarn Package Cache
         keys:
-        - yarn-packages-{{ checksum "yarn.lock" }}
+        - yarn-packages-{{ checksum "frontend-src/yarn.lock" }}
     - run:
         name: Install Dependencies
         command: cd frontend-src && yarn install --immutable
@@ -28,7 +28,7 @@ jobs:
         command: cd frontend-src && yarn build
     - save_cache:
         name: Save Yarn Package Cache
-        key: yarn-packages-{{ checksum "yarn.lock" }}
+        key: yarn-packages-{{ checksum "frontend-src/yarn.lock" }}
         paths:
           - ~/.cache/yarn
   release:
