@@ -3,7 +3,9 @@ workflows:
   main:
     jobs:
     - build-frontend
-    - release
+    - release:
+        requires:
+        - build-frontend
         # Only run this job on git tag pushes
         #filters:
         #  branches:
@@ -31,6 +33,7 @@ jobs:
         key: yarn-packages-{{ checksum "frontend-src/yarn.lock" }}
         paths:
           - ~/.cache/yarn
+
   release:
     docker:
     - image: circleci/golang:1.15
