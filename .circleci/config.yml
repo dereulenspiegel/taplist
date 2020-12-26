@@ -15,6 +15,7 @@ jobs:
     docker:
     - image: circleci/node
     steps:
+    - checkout
     - restore_cache:
         name: Restore Yarn Package Cache
         keys:
