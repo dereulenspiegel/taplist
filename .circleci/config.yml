@@ -7,11 +7,23 @@ workflows:
         requires:
         - build-frontend
         # Only run this job on git tag pushes
-        #filters:
-        #  branches:
-        #    ignore: /.*/
-        #  tags:
-        #    only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+        #
+  release-flow:
+    jobs:
+    - build-frontend:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+    - release:
+        requires:
+        - build-frontend
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /v[0-9]+(\.[0-9]+)*(-.*)*/
 jobs:
   build-frontend:
     docker:
@@ -40,3 +52,10 @@ jobs:
     steps:
     - checkout
     - run: curl -sL https://git.io/goreleaser | bash -s -- --snapshot
+
+  release:
+    docker:
+    - image: circleci/golang:1.15
+    steps:
+    - checkout
+    - run: curl -sL https://git.io/goreleaser | bash
