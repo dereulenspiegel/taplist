@@ -47,7 +47,7 @@ const (
 func setDefaults() {
 	viper.SetDefault("kegerator.name", "My Smart Kegerator")
 	viper.SetDefault("num.taps", 2)
-	viper.SetDefault("http.addr", ":8088")
+	viper.SetDefault("http.addr", ":9099")
 	viper.SetDefault("log.level", logrus.InfoLevel.String())
 	viper.SetDefault("no.auth", false)
 	viper.SetDefault("http.user.header", "X-Auth-User")
