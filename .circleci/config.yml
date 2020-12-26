@@ -49,6 +49,9 @@ jobs:
   snapshot:
     docker:
     - image: circleci/golang:1.15
+      auth:
+        username: dereulenspiegel
+        password: $DOCKERHUB_PASSWORD
     steps:
     - checkout
     - setup_remote_docker:
