@@ -25,7 +25,7 @@
           </div>
         </div>
         
-        <div class="tile is-parent is-vertical is-7" v-if="tap.beer">
+        <div class="tile is-parent is-vertical is-7 beer-data" v-if="tap.beer">
           <div class="tile is-child" v-if="hasFacts">
             <span v-if="tap.beer.abv">ABV: {{tap.beer.abv}} %</span><br>
             <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu}} </span><br>
@@ -101,5 +101,9 @@ export default {
   color: black;
   font-size: 6em !important;
   margin: 5px;
+}
+
+.beer-data {
+  font-size: 1.4em;
 }
 </style>
