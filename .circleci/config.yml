@@ -68,4 +68,9 @@ jobs:
     - checkout
     - setup_remote_docker:
         version: 19.03.13
+    - run: |
+        ssh remote-docker \<<EOF
+          sudo bash -c 'echo "{\"experimental\": true}" > /etc/docker/daemon.json'
+          sudo systemctl restart docker
+        EOF
     - run: echo $DOCKERHUB_PASSWORD | docker login --username dereulenspiegel --password-stdin && curl -sL https://git.io/goreleaser | bash
