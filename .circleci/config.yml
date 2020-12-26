@@ -3,7 +3,7 @@ workflows:
   main:
     jobs:
     - build-frontend
-    - release:
+    - snapshot:
         requires:
         - build-frontend
         # Only run this job on git tag pushes
@@ -34,9 +34,9 @@ jobs:
         paths:
           - ~/.cache/yarn
 
-  release:
+  snapshot:
     docker:
     - image: circleci/golang:1.15
     steps:
     - checkout
-    - run: curl -sL https://git.io/goreleaser | bash
+    - run: curl -sL https://git.io/goreleaser | bash -s -- --snapshot
