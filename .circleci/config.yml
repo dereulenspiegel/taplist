@@ -68,4 +68,4 @@ jobs:
     - checkout
     - setup_remote_docker:
         version: 19.03.13
-    - run: curl -sL https://git.io/goreleaser | bash
+    - run: echo $DOCKERHUB_PASSWORD | docker login --username dereulenspiegel --password-stdin && curl -sL https://git.io/goreleaser | bash
