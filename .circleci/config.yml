@@ -51,6 +51,8 @@ jobs:
     - image: circleci/golang:1.15
     steps:
     - checkout
+    - setup_remote_docker:
+        version: 19.03.13
     - run: curl -sL https://git.io/goreleaser | bash -s -- --snapshot
 
   release:
