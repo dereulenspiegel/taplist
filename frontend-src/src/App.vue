@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import NoSleep from 'nosleep.js';
 import BeerTap from './components/BeerTap.vue'
 
 import KEGERATOR_QUERY from './gql/kegerator.gql'
@@ -45,12 +46,17 @@ export default {
       kegerator: {
         name: 'Unknown',
         taps: []
-      }
+      },
+      noSleep: new NoSleep(),
     }
   },
   computed: {
     isFullscreen: function() {
-      return document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
+      var fullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
+      if(!fullscreen) {
+        this.noSleep.disable()
+      }
+      return fullscreen
     }
   },
   methods: {
@@ -61,6 +67,7 @@ export default {
       })
     },
     enableFullscreen: function() {
+      this.noSleep.enable()
       var element = document.documentElement
       if(element.requestFullscreen) {
         element.requestFullscreen();
