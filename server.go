@@ -169,9 +169,11 @@ func HasRole(ctx context.Context, obj interface{}, next graphql.Resolver, role m
 			if user == viper.GetString("admin.user") {
 				logger.WithField("username", user).Debug("Found admin user, role admin granted")
 				next(ctx)
+			} else {
+				logger.WithField("username", user).Debug("Unknown user, not granting admin role")
 			}
 		}
 	}
-	logger.Debug("Can't grant admin role")
+	logger.Debug("No valid authentication given, can't grant admin role")
 	return nil, fmt.Errorf("Access denied")
 }

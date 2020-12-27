@@ -73,12 +73,17 @@ func (r *mutationResolver) UpdateTap(ctx context.Context, id string, data model.
 }
 
 func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID string, brewfatherBatchID string) (*model.Tap, error) {
+	logger := logrus.WithContext(ctx).WithFields(logrus.Fields{
+		"resolver": "SetBrewfatherBatchOnTap",
+	})
 	batch, err := r.brewfatherClient.Batch(brewfatherBatchID)
 	if err != nil {
+		logger.WithError(err).Error("Failed to load brewfather batch")
 		return nil, fmt.Errorf("Failed to get batch from brewfather: %w", err)
 	}
 	tap, err := r.store.Tap(tapID)
 	if err != nil {
+		logger.WithError(err).Error("Failed to query tap")
 		return nil, fmt.Errorf("Failed to query tap to update: %w", err)
 	}
 
@@ -119,6 +124,9 @@ func (r *queryResolver) Taps(ctx context.Context) ([]*model.Tap, error) {
 }
 
 func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([]*model.BrewfatherBatch, error) {
+	logger := logrus.WithContext(ctx).WithFields(logrus.Fields{
+		"resolver": "BrewfatherBatches",
+	})
 	if r.brewfatherClient == nil {
 		return nil, errors.New("Brewfather is unconfigured")
 	}
@@ -130,6 +138,7 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 		batches, err = r.brewfatherClient.Batches(brewchild.Complete(true), brewchild.Limit(50))
 	}
 	if err != nil {
+		logger.WithError(err).Error("Failed to query brewfather batches")
 		return nil, err
 	}
 	tb := make([]*model.BrewfatherBatch, len(batches))
