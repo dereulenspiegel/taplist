@@ -60,6 +60,8 @@ jobs:
     - checkout
     - setup_remote_docker:
         version: 19.03.13
+    - attach_workspace:
+        at: ./
     - run: curl -sL https://git.io/goreleaser | bash -s -- --snapshot
 
   release:
