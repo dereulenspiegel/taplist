@@ -74,6 +74,6 @@ jobs:
           sudo systemctl restart docker
         EOF
     - run: |
-        mkdir -p ~/.docker && echo "{\"experimental\": true}" > ~/.docker/config.json
-          
-    - run: echo $DOCKERHUB_PASSWORD | docker login --username dereulenspiegel --password-stdin && curl -sL https://git.io/goreleaser | bash
+        mkdir -p ~/.docker && echo '{"experimental": "enabled"}' > ~/.docker/config.json   
+    - run: echo $DOCKERHUB_PASSWORD | docker login --username dereulenspiegel --password-stdin
+    - run: curl -sL https://git.io/goreleaser | bash
