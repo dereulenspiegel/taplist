@@ -45,6 +45,10 @@ jobs:
         key: yarn-packages-{{ checksum "frontend-src/yarn.lock" }}
         paths:
           - ~/.cache/yarn
+    - persist_to_workspace:
+        root: ./
+        paths: 
+        - frontend
 
   snapshot:
     docker:
@@ -76,4 +80,6 @@ jobs:
     - run: |
         mkdir -p ~/.docker && echo '{"experimental": "enabled"}' > ~/.docker/config.json   
     - run: echo $DOCKERHUB_PASSWORD | docker login --username dereulenspiegel --password-stdin
+    - attach_workspace:
+        at: ./
     - run: curl -sL https://git.io/goreleaser | bash
