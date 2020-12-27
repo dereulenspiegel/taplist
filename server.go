@@ -143,7 +143,13 @@ func main() {
 
 func checkUserHeader(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logger := logrus.WithFields(logrus.Fields{
+			"remoteAddr":  r.RemoteAddr,
+			"userAgent":   r.UserAgent(),
+			"headerField": viper.GetString("http.user.header"),
+		})
 		if headerVal := r.Header.Get(viper.GetString("http.user.header")); headerVal != "" {
+			logger.WithField("username", headerVal).Debug("Found user in request")
 			ctx := context.WithValue(r.Context(), CtxAuthUser, headerVal)
 			r = r.WithContext(ctx)
 		}
@@ -152,16 +158,20 @@ func checkUserHeader(next http.Handler) http.Handler {
 }
 
 func HasRole(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error) {
+	logger := logrus.WithContext(ctx)
 	if viper.GetBool("no.auth") {
+		logger.Debug("Auth disabled, role admin granted")
 		return next(ctx)
 	}
 
 	if val := ctx.Value(CtxAuthUser); val != nil {
 		if user, ok := val.(string); ok {
 			if user == viper.GetString("admin.user") {
+				logger.WithField("username", user).Debug("Found admin user, role admin granted")
 				next(ctx)
 			}
 		}
 	}
+	logger.Debug("Can't grant admin role")
 	return nil, fmt.Errorf("Access denied")
 }
