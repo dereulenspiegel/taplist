@@ -37,7 +37,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.amd64
   goarch: amd64
   goos: linux
   build_flag_templates:
@@ -54,7 +54,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.arm64
   goos: linux
   goarch: arm64
   build_flag_templates:
@@ -71,7 +71,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.arm
   goos: linux
   goarch: arm
   goarm: 7

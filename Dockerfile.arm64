@@ -1,5 +1,4 @@
-ARG ARCH
-FROM scratch
+FROM --platform=linux/arm64 alpine:3.12
 COPY taplist /taplist
 EXPOSE 9099
 VOLUME ["/data"]

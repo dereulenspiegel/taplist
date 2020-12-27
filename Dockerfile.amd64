@@ -1,0 +1,5 @@
+FROM --platform=linux/amd64 alpine:3.12
+COPY taplist /taplist
+EXPOSE 9099
+VOLUME ["/data"]
+ENTRYPOINT ["/taplist"]
