@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { createProvider } from './vue-apollo'
+import './fa.config'
 require('@/app.scss')
 
 Vue.config.productionTip = false

@@ -11,9 +11,11 @@ $fullhd-enabled: true;
 
 @import "~bulma/sass/utilities/_all.sass";
 @import '~bulma/sass/components/media.sass';
+@import '~bulma/sass/components/level.sass';
 @import '~bulma/sass/elements/container.sass';
 @import '~bulma/sass/elements/content.sass';
 @import '~bulma/sass/elements/button.sass';
+@import '~bulma/sass/elements/icon.sass';
 @import '~bulma/sass/elements/box.sass';
 @import '~bulma/sass/elements/title.sass';
 @import '~bulma/sass/grid/_all.sass';
@@ -22,3 +24,6 @@ $fullhd-enabled: true;
 @import '~bulma/sass/layout/_all.sass';
 @import '~bulma/sass/base/_all.sass';
 @import '~bulma/sass/components/modal.sass';
+
+/*$fa-font-path: './../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
+@import "~@fortawesome/fontawesome-free/css/fontawesome.min.css";*/

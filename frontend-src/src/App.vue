@@ -8,7 +8,18 @@
       <BeerTap v-for="tap in kegerator.taps" v-bind:key="tap.id" v-bind:tap="tap" @tapUpdated="refreshData"/>
     </div>
     <div class="hero-foot">
-      <p>GitHub: dereulenspiegel/taplist</p>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <span class="level-item">GitHub: dereulenspiegel/taplist</span>
+        </div>
+
+        <div class="level-right">
+          <button v-if="!isFullscreen" v-on:click.prevent="enableFullscreen" class="level-item button is-light">
+            <span class="icon has-text-white is-large"><font-awesome-icon :icon="['fas', 'expand-arrows-alt']"></font-awesome-icon></span>
+          </button>
+        </div>
+      </nav>
+      
     </div>
   </section>
 </template>
@@ -37,12 +48,27 @@ export default {
       }
     }
   },
+  computed: {
+    isFullscreen: function() {
+      return document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
+    }
+  },
   methods: {
     refreshData: function() {
       this.$apollo.query({
         query: KEGERATOR_QUERY,
         update: data => this.kegerator = data
       })
+    },
+    enableFullscreen: function() {
+      var element = document.documentElement
+      if(element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if(element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      } else if(element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      }
     }
   }
 }

@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@brewlab/calc": "^0.3.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "bulma": "^0.9.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
