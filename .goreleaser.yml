@@ -32,6 +32,7 @@ builds:
 dockers:
 - image_templates:
   - dereulenspiegel/taplist:{{ .Version }}-amd64
+  - dereulenspiegel/taplist:latest-amd64
   builds:
   - main-build
   binaries:
@@ -42,8 +43,13 @@ dockers:
   build_flag_templates:
   - "--build-arg"
   - "ARCH=x86_64"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
 - image_templates:
   - dereulenspiegel/taplist:{{ .Version }}-arm64
+  - dereulenspiegel/taplist:latest-arm64
   builds:
   - main-build
   binaries:
@@ -54,8 +60,13 @@ dockers:
   build_flag_templates:
   - "--build-arg"
   - "ARCH=arm64"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
 - image_templates:
   - dereulenspiegel/taplist:{{ .Version }}-armv7
+  - dereulenspiegel/taplist:latest-armv7
   builds:
   - main-build
   binaries:
@@ -67,6 +78,10 @@ dockers:
   build_flag_templates:
   - "--build-arg"
   - "ARCH=arm_7"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
 
 docker_manifests:
 - name_template: dereulenspiegel/taplist:{{ .Version }}
