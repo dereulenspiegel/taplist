@@ -1,7 +1,7 @@
 before:
   hooks:
     - go mod download
-    - go get -u github.com/gobuffalo/packr/v2/packr2
+    - go install github.com/gobuffalo/packr/v2/packr2
     - go generate ./...
     - packr2
 builds:
@@ -27,6 +27,7 @@ builds:
       goarch: arm64
   ldflags:
     - -s -w -X main.build={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} 
+
 dockers:
 - image_templates:
   - dereulenspiegel/taplist:{{ .Version }}-amd64
@@ -38,6 +39,8 @@ dockers:
   dockerfile: Dockerfile.amd64
   goarch: amd64
   goos: linux
+  extra_files:
+  - frontend
   build_flag_templates:
   - "--build-arg"
   - "ARCH=x86_64"
@@ -55,6 +58,8 @@ dockers:
   dockerfile: Dockerfile.arm64
   goos: linux
   goarch: arm64
+  extra_files:
+  - frontend
   build_flag_templates:
   - "--build-arg"
   - "ARCH=arm64"
@@ -73,6 +78,8 @@ dockers:
   goos: linux
   goarch: arm
   goarm: 7
+  extra_files:
+  - frontend
   build_flag_templates:
   - "--build-arg"
   - "ARCH=arm_7"
@@ -87,6 +94,11 @@ docker_manifests:
   - dereulenspiegel/taplist:{{ .Version }}-amd64
   - dereulenspiegel/taplist:{{ .Version }}-arm64
   - dereulenspiegel/taplist:{{ .Version }}-armv7
+- name_template: dereulenspiegel/taplist:latest
+  image_templates:
+  - dereulenspiegel/taplist:latest-amd64
+  - dereulenspiegel/taplist:latest-arm64
+  - dereulenspiegel/taplist:latest-armv7
 
 archives:
 - replacements:

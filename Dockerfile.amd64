@@ -1,5 +1,7 @@
 FROM --platform=linux/amd64 alpine:3.12
-COPY taplist /taplist
+RUN mkdir -p /opt/taplist
+COPY taplist /opt/taplist/taplist
+COPY frontend /opt/taplist/frontend
 EXPOSE 9099
-VOLUME ["/data"]
-ENTRYPOINT ["/taplist"]
+VOLUME ["/opt/taplist/data"]
+ENTRYPOINT ["/opt/taplist/taplist"]
