@@ -11,23 +11,23 @@
         <h2 class="subtitle">Please refill</h2>
       </div>
       
-      <div class="level is-mobile">
-        <div class="level-item">
+      <div class="columns is-gapless">
+        <div class="column is-narrow">
           <span class="tapnumber">{{tap.number}}</span>
         </div>
-        <div class="level-item">
+        <div class="column is-narrow">
           <!-- Beer Image -->
           <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
           <BeerPint v-else width="150px" ebc="0" />
         </div>
-        <div class="level-item beer-data" v-if="hasFacts">
+        <div class="column is-narrow beer-data" v-if="hasFacts">
           <p class="content">
             <span v-if="tap.beer.abv">ABV: {{tap.beer.abv}} %</span><br>
             <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu}} </span><br>
             <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio}}</span><br>
           </p>
         </div>
-        <div class="level-item" v-else>
+        <div class="column" v-else>
           <!-- Insert sad smiley -->
         </div>
       </div>
