@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import { createProvider } from './vue-apollo'
+import Notify from 'vue2-notify'
 import './fa.config'
 require('@/app.scss')
 
@@ -23,6 +24,14 @@ if(window.location.port){
 
 wsURL = wsURL + "/query"
 httpURL = httpURL + "/query"
+
+Vue.use(Notify,{
+  itemClass: 'notification is-danger',
+  position: 'top-right',
+  enter: 'fadeIn',
+  leave: 'fadeOut',
+  closeButtonClass: false
+})
 
 new Vue({
   apolloProvider: createProvider({

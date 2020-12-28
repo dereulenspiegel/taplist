@@ -1,6 +1,5 @@
 <template>
   <section class="hero is-fullheight">
-    
     <div class="hero-head">
       <h3 class="title">{{kegerator.name}}</h3>
     </div>
@@ -36,6 +35,9 @@ export default {
     kegerator: {
       query: KEGERATOR_QUERY,
       pollInterval: 1000,
+      error: function(error) {
+        this.showError(error)
+      }
     }
   },
   components: {
@@ -48,16 +50,20 @@ export default {
         taps: []
       },
       noSleep: new NoSleep(),
+      error: null
     }
   },
   computed: {
     isFullscreen: function() {
       var fullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
-      if(!fullscreen) {
-        this.noSleep.disable()
-      }
       return fullscreen
     }
+  },
+  beforeDestroy: function() {
+    this.noSleep.disable()
+  },
+  beforeMount: function() {
+    this.noSleep.enable()
   },
   methods: {
     refreshData: function() {
@@ -67,7 +73,6 @@ export default {
       })
     },
     enableFullscreen: function() {
-      this.noSleep.enable()
       var element = document.documentElement
       if(element.requestFullscreen) {
         element.requestFullscreen();
@@ -76,6 +81,25 @@ export default {
       } else if(element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
       }
+    },
+    showError: function(error) {
+      var props = {
+        type: 'danger',
+        title: 'Error'
+      }
+
+      if(error.networkError) {
+        if (error.networkError.statusCode === 401) {
+          props.message = 'Unauthorized'
+        } else {
+          props.message = "Taplist server down"
+        }
+      } else if(error.graphQLErrors && error.graphQLErrors.lenght > 0) {
+        props.message = error.graphQLErrors[0].message
+      } else {
+        props.message = JSON.stringify(error)
+      }
+      this.$notify.danger(props.message)
     }
   }
 }
