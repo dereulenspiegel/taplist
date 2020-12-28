@@ -24,6 +24,7 @@
 
 import BREWFATHER_BATCHES_QUERY from '../gql/brewfatherBatches.gql'
 import gql from 'graphql-tag'
+import errUtils from '../errors.js'
 
 export default {
   name: 'ModalSelectBatch',
@@ -33,9 +34,18 @@ export default {
     active: Boolean
   },
   apollo: {
-    brewfatherBatches: BREWFATHER_BATCHES_QUERY
+    brewfatherBatches: {
+      query: BREWFATHER_BATCHES_QUERY,
+      error: function(error) {
+        this.showError(error)
+      }
+    }
   },
   methods: {
+    showError: function(error) {
+      var msg = errUtils.errorMsg(error)
+      this.$notify.danger(msg)
+    },
     cancel: function() {
       this.$emit('cancel')
     },
@@ -53,6 +63,7 @@ export default {
       }).then( () => {
         this.$emit('selected')
       }).catch((error) => {
+        this.showError(error)
         console.log("Error {}", error)
       })
     },
@@ -70,7 +81,7 @@ export default {
       }).then( () => {
         this.$emit('selected', batch);
       }).catch((error) => {
-        // TODO show error
+        this.showError(error)
         console.log("Error {}", error)
       })
     }

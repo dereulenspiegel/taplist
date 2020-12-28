@@ -26,6 +26,7 @@
 <script>
 import NoSleep from 'nosleep.js';
 import BeerTap from './components/BeerTap.vue'
+import errUtils from './errors.js'
 
 import KEGERATOR_QUERY from './gql/kegerator.gql'
 
@@ -83,23 +84,8 @@ export default {
       }
     },
     showError: function(error) {
-      var props = {
-        type: 'danger',
-        title: 'Error'
-      }
-
-      if(error.networkError) {
-        if (error.networkError.statusCode === 401) {
-          props.message = 'Unauthorized'
-        } else {
-          props.message = "Taplist server down"
-        }
-      } else if(error.graphQLErrors && error.graphQLErrors.lenght > 0) {
-        props.message = error.graphQLErrors[0].message
-      } else {
-        props.message = JSON.stringify(error)
-      }
-      this.$notify.danger(props.message)
+      var msg = errUtils.errorMsg(error)
+      this.$notify.danger(msg)
     }
   }
 }

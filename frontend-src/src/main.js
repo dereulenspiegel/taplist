@@ -25,13 +25,22 @@ if(window.location.port){
 wsURL = wsURL + "/query"
 httpURL = httpURL + "/query"
 
-Vue.use(Notify,{
-  itemClass: 'notification is-danger',
-  position: 'top-right',
+Vue.use(Notify, {
+  itemClass: 'notification',
+  position: 'top-left',
   enter: 'fadeIn',
   leave: 'fadeOut',
   closeButtonClass: false
 })
+
+const types = {
+  info: { itemClass: 'is-info', },
+  error: { itemClass: 'is-danger' },
+  warning: { itemClass: 'is-warning' },
+  success: { itemClass: 'is-success', iconClass: 'fa fa-lg fa-check-circle' }
+}
+
+Vue.$notify.setTypes(types);
 
 new Vue({
   apolloProvider: createProvider({
