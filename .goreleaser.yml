@@ -28,6 +28,9 @@ builds:
   ldflags:
     - -s -w -X main.build={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} 
 
+release:
+  prerelease: auto
+
 dockers:
 - image_templates:
   - dereulenspiegel/taplist:{{ .Version }}-amd64
