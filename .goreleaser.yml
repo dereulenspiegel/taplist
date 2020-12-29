@@ -26,7 +26,7 @@ builds:
     - goos: windows
       goarch: arm64
   ldflags:
-    - -s -w -X main.Version={{.Version}} -X main.Commit={{.Commit}} -X main.Date={{.BuildDate}} 
+    - -s -w -X main.Version={{.Version}} -X main.Commit={{.Commit}} -X main.BuildDate={{.Date}} 
 
 release:
   prerelease: auto
