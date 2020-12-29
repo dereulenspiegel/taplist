@@ -39,7 +39,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.amd64
   goarch: amd64
   goos: linux
   extra_files:
@@ -57,7 +57,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.arm64
   goos: linux
   goarch: arm64
   extra_files:
@@ -75,7 +75,7 @@ dockers:
   - main-build
   binaries:
   - taplist
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.arm
   goos: linux
   goarch: arm
   goarm: 7
