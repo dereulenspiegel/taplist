@@ -46,8 +46,6 @@ dockers:
   - frontend
   build_flag_templates:
   - "--platform=linux/amd64"
-  - "--build-arg"
-  - "ARCH=x86_64"
   - "--label=org.opencontainers.image.created={{.Date}}"
   - "--label=org.opencontainers.image.title={{.ProjectName}}"
   - "--label=org.opencontainers.image.revision={{.FullCommit}}"
@@ -66,8 +64,6 @@ dockers:
   - frontend
   build_flag_templates:
   - "--platform=linux/arm64"
-  - "--build-arg"
-  - "ARCH=arm64"
   - "--label=org.opencontainers.image.created={{.Date}}"
   - "--label=org.opencontainers.image.title={{.ProjectName}}"
   - "--label=org.opencontainers.image.revision={{.FullCommit}}"
@@ -87,8 +83,6 @@ dockers:
   - frontend
   build_flag_templates:
   - "--platform=linux/arm/7"
-  - "--build-arg"
-  - "ARCH=arm_7"
   - "--label=org.opencontainers.image.created={{.Date}}"
   - "--label=org.opencontainers.image.title={{.ProjectName}}"
   - "--label=org.opencontainers.image.revision={{.FullCommit}}"
