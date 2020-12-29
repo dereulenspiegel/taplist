@@ -9,7 +9,7 @@
     <div class="hero-foot">
       <nav class="level is-mobile">
         <div class="level-left">
-          <span class="level-item">GitHub: dereulenspiegel/taplist</span>
+          <span class="level-item">GitHub: dereulenspiegel/taplist (Version {{kegerator.serverVersion}})</span>
         </div>
 
         <div class="level-right">
