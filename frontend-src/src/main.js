@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import { createProvider } from './vue-apollo'
 import Notify from 'vue2-notify'
+import fullscreen from 'vue-fullscreen'
 import './fa.config'
 require('@/app.scss')
 
@@ -25,6 +26,7 @@ if(window.location.port){
 wsURL = wsURL + "/query"
 httpURL = httpURL + "/query"
 
+Vue.use(fullscreen)
 Vue.use(Notify, {
   itemClass: 'notification',
   position: 'top-left',

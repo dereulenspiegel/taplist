@@ -13,7 +13,7 @@
         </div>
 
         <div class="level-right">
-          <button v-if="!isFullscreen" v-on:click.prevent="enableFullscreen" class="level-item button is-light">
+          <button v-if="!fullscreen" v-on:click.prevent="enableFullscreen" class="level-item button is-light">
             <span class="icon has-text-white is-large"><font-awesome-icon :icon="['fas', 'expand-arrows-alt']"></font-awesome-icon></span>
           </button>
         </div>
@@ -51,20 +51,8 @@ export default {
         taps: []
       },
       noSleep: new NoSleep(),
-      error: null
+      fullscreen: false
     }
-  },
-  computed: {
-    isFullscreen: function() {
-      var fullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
-      return fullscreen
-    }
-  },
-  beforeDestroy: function() {
-    this.noSleep.disable()
-  },
-  beforeMount: function() {
-    this.noSleep.enable()
   },
   methods: {
     refreshData: function() {
@@ -74,14 +62,18 @@ export default {
       })
     },
     enableFullscreen: function() {
-      var element = document.documentElement
-      if(element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if(element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      } else if(element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
+      this.$fullscreen.toggle(document.documentElement,{
+        wrap: false,
+        callback: this.fullscreenChange
+      })
+    },
+    fullscreenChange: function(fullscreen) {
+      if(fullscreen) {
+        this.noSleep.enable()
+      } else {
+        this.noSleep.disable()
       }
+      this.fullscreen = fullscreen
     },
     showError: function(error) {
       var msg = errUtils.errorMsg(error)
