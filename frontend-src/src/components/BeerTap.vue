@@ -1,5 +1,5 @@
 <template>
-  <div class="is-flex-grow-1 box beertap" style="min-width:250px">
+  <div class="box beertap">
     <modal-select-batch :tapId="tap.id" :tapNumber="tap.number" :active="modal.active" @cancel="modalCancel" @selected="batchSelected"/>
     <div class="is-flex is-flex-direction-column is-flex-wrap-nowrap is-justify-content-flex-start" v-on:click.prevent="showModal">
       <div v-if="tap.beer">
@@ -11,14 +11,14 @@
         <h2 class="subtitle">Please refill</h2>
       </div>
       
-      <div class="columns is-gapless">
+      <div class="columns is-gapless is-vcentered">
         <div class="column is-narrow">
           <span class="tapnumber">{{tap.number}}</span>
         </div>
         <div class="column is-narrow">
           <!-- Beer Image -->
-          <BeerPint v-if="tap.beer" width="150px" v-bind:ebc="tap.beer.colorEbc"/>
-          <BeerPint v-else width="150px" ebc="0" />
+          <BeerPint v-if="tap.beer" width="100px" v-bind:ebc="tap.beer.colorEbc"/>
+          <BeerPint v-else width="100px" ebc="0" />
         </div>
         <div class="column is-narrow beer-data" v-if="hasFacts">
           <p class="content">
@@ -91,6 +91,6 @@ export default {
 }
 
 .beer-data {
-  font-size: 1.4em;
+  font-size: 1.0em;
 }
 </style>

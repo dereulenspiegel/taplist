@@ -3,7 +3,7 @@
     <div class="hero-head">
       <h3 class="title">{{kegerator.name}}</h3>
     </div>
-    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-align-content-stretch hero-body">
+    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-around hero-body">
       <BeerTap v-for="tap in kegerator.taps" v-bind:key="tap.id" v-bind:tap="tap" @tapUpdated="refreshData"/>
     </div>
     <div class="hero-foot">
