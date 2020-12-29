@@ -28,7 +28,11 @@ var (
 	defaultHttpTimeout = time.Second * 10
 )
 
-var Version = "undefined"
+var (
+	Version   = "undefined"
+	Commit    = "undefined"
+	BuildDate = "undefined"
+)
 
 const (
 	frontendPath = "./frontend"
@@ -78,6 +82,8 @@ func main() {
 
 	logrus.WithFields(logrus.Fields{
 		"version":       Version,
+		"commit":        Commit,
+		"buildDate":     BuildDate,
 		"numberOfTaps":  viper.GetInt("num.taps"),
 		"kegeratorName": viper.GetString("kegerator.name"),
 	}).Info("Starting Taplist")
