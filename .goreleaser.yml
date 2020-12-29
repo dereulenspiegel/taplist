@@ -65,7 +65,7 @@ dockers:
   extra_files:
   - frontend
   build_flag_templates:
-  - "--platform=linux/amd64"
+  - "--platform=linux/arm64"
   - "--build-arg"
   - "ARCH=arm64"
   - "--label=org.opencontainers.image.created={{.Date}}"
