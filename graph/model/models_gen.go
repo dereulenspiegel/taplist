@@ -41,9 +41,10 @@ type BrewfatherBatch struct {
 }
 
 type Kegerator struct {
-	Name    *string   `json:"name"`
-	Sensors []*Sensor `json:"sensors"`
-	Taps    []*Tap    `json:"taps"`
+	Name          *string   `json:"name"`
+	ServerVersion string    `json:"serverVersion"`
+	Sensors       []*Sensor `json:"sensors"`
+	Taps          []*Tap    `json:"taps"`
 }
 
 type Sensor struct {

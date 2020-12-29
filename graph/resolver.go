@@ -19,11 +19,13 @@ type Store interface {
 type Resolver struct {
 	store            Store
 	brewfatherClient *brewchild.Client
+	serverVersion    string
 }
 
-func NewResolver(str Store, brewchildClient *brewchild.Client) *Resolver {
+func NewResolver(str Store, brewchildClient *brewchild.Client, serveVersion string) *Resolver {
 	return &Resolver{
 		store:            str,
 		brewfatherClient: brewchildClient,
+		serverVersion:    serveVersion,
 	}
 }

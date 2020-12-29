@@ -47,6 +47,7 @@ type Tap {
 
 type Kegerator {
   name: String
+  serverVersion: String!
   sensors: [Sensor!]!
   taps: [Tap!]!
 }

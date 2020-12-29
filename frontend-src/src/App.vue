@@ -38,6 +38,12 @@ export default {
       pollInterval: 1000,
       error: function(error) {
         this.showError(error)
+      },
+      update: function(data) {
+        if(this.kegerator.serverVersion && this.kegerator.serverVersion != data.kegerator.serverVersion) {
+          window.location.reload(true); 
+        }
+        return data.kegerator
       }
     }
   },

@@ -116,7 +116,12 @@ func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID st
 }
 
 func (r *queryResolver) Kegerator(ctx context.Context) (*model.Kegerator, error) {
-	return r.store.Kegerator()
+	k, err := r.store.Kegerator()
+	if err != nil {
+		return nil, err
+	}
+	k.ServerVersion = r.serverVersion
+	return k, nil
 }
 
 func (r *queryResolver) Taps(ctx context.Context) ([]*model.Tap, error) {

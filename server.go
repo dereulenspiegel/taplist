@@ -96,7 +96,7 @@ func main() {
 	}
 
 	graphqlConf := generated.Config{
-		Resolvers: graph.NewResolver(fsStore, bfClient),
+		Resolvers: graph.NewResolver(fsStore, bfClient, Version),
 		Directives: generated.DirectiveRoot{
 			HasRole: HasRole,
 		},

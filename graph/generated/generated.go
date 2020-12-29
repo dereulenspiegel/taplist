@@ -67,9 +67,10 @@ type ComplexityRoot struct {
 	}
 
 	Kegerator struct {
-		Name    func(childComplexity int) int
-		Sensors func(childComplexity int) int
-		Taps    func(childComplexity int) int
+		Name          func(childComplexity int) int
+		Sensors       func(childComplexity int) int
+		ServerVersion func(childComplexity int) int
+		Taps          func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -246,6 +247,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Kegerator.Sensors(childComplexity), true
+
+	case "Kegerator.serverVersion":
+		if e.complexity.Kegerator.ServerVersion == nil {
+			break
+		}
+
+		return e.complexity.Kegerator.ServerVersion(childComplexity), true
 
 	case "Kegerator.taps":
 		if e.complexity.Kegerator.Taps == nil {
@@ -508,6 +516,7 @@ type Tap {
 
 type Kegerator {
   name: String
+  serverVersion: String!
   sensors: [Sensor!]!
   taps: [Tap!]!
 }
@@ -1221,6 +1230,41 @@ func (ec *executionContext) _Kegerator_name(ctx context.Context, field graphql.C
 	res := resTmp.(*string)
 	fc.Result = res
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Kegerator_serverVersion(ctx context.Context, field graphql.CollectedField, obj *model.Kegerator) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Kegerator",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ServerVersion, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Kegerator_sensors(ctx context.Context, field graphql.CollectedField, obj *model.Kegerator) (ret graphql.Marshaler) {
@@ -3406,6 +3450,11 @@ func (ec *executionContext) _Kegerator(ctx context.Context, sel ast.SelectionSet
 			out.Values[i] = graphql.MarshalString("Kegerator")
 		case "name":
 			out.Values[i] = ec._Kegerator_name(ctx, field, obj)
+		case "serverVersion":
+			out.Values[i] = ec._Kegerator_serverVersion(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "sensors":
 			out.Values[i] = ec._Kegerator_sensors(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
