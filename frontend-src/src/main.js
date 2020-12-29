@@ -42,6 +42,20 @@ const types = {
 
 Vue.$notify.setTypes(types);
 
+Vue.filter('number', function(value) {
+  if (typeof value !== 'number'){
+    return value
+  }
+  return value.toFixed(2) 
+})
+
+Vue.filter('int', function(value) {
+  if (typeof value !== 'number'){
+    return value
+  }
+  return Math.floor(value)
+})
+
 new Vue({
   apolloProvider: createProvider({
     wsEndpoint: wsURL,

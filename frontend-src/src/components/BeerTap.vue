@@ -22,9 +22,9 @@
         </div>
         <div class="column is-narrow beer-data" v-if="hasFacts">
           <p class="content">
-            <span v-if="tap.beer.abv">ABV: {{tap.beer.abv}} %</span><br>
-            <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu}} </span><br>
-            <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio}}</span><br>
+            <span v-if="tap.beer.abv">ABV: {{tap.beer.abv | number}} %</span><br>
+            <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu | int}} </span><br>
+            <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio | number}}</span><br>
           </p>
         </div>
         <div class="column" v-else>
@@ -91,6 +91,6 @@ export default {
 }
 
 .beer-data {
-  font-size: 1.0em;
+  font-size: 1.2em;
 }
 </style>
