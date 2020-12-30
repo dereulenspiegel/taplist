@@ -21,11 +21,16 @@
           <BeerPint v-else width="100px" ebc="0" />
         </div>
         <div class="column is-narrow beer-data" v-if="hasFacts">
-          <p class="content">
-            <span v-if="tap.beer.abv">ABV: {{tap.beer.abv | number}} %</span><br>
-            <span v-if="tap.beer.ibu">IBU: {{tap.beer.ibu | int}} </span><br>
-            <span v-if="tap.beer.buGuRatio">BU-GU-Ratio: {{tap.beer.buGuRatio | number}}</span><br>
-          </p>
+          <h2 v-if="tap.beer.style" class="subtitle mb-1">{{tap.beer.style}}</h2>
+          <div class="level is-mobile m-0" v-if="tap.beer.abv">
+            <span class="level-left has-text-left is-uppercase has-text-weight-medium">ABV:</span> <span class="level-right ml-1 has-text-right">{{tap.beer.abv | number}}</span>
+          </div>
+          <div class="level is-mobile m-0" v-if="tap.beer.ibu">
+            <span class="level-left has-text-left is-uppercase has-text-weight-medium">IBU:</span><span class="level-right ml-1 has-text-right">{{tap.beer.ibu | int}} </span>
+          </div>
+          <div class="level is-mobile m-0" v-if="tap.beer.buGuRatio">
+            <span class="level-left has-text-left is-uppercase has-text-weight-medium">BU-GU-Ratio:</span><span class="level-right ml-1 has-text-right">{{tap.beer.buGuRatio | number}}</span><br/>
+          </div>
         </div>
         <div class="column" v-else>
           <!-- Insert sad smiley -->
@@ -91,6 +96,6 @@ export default {
 }
 
 .beer-data {
-  font-size: 1.2em;
+  font-size: 1.0em;
 }
 </style>

@@ -62,10 +62,7 @@ export default {
   },
   methods: {
     refreshData: function() {
-      this.$apollo.query({
-        query: KEGERATOR_QUERY,
-        update: data => this.kegerator = data
-      })
+      this.$apollo.queries.kegerator.refetch()
     },
     enableFullscreen: function() {
       this.$fullscreen.toggle(document.documentElement,{

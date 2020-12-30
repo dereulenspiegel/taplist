@@ -106,6 +106,9 @@ func (r *mutationResolver) SetBrewfatherBatchOnTap(ctx context.Context, tapID st
 		Fg:          &fg,
 		GravityUnit: &gravityUnit,
 	}
+	if batch.Recipe != nil && batch.Recipe.Style != nil {
+		tap.Beer.Style = &batch.Recipe.Style.Name
+	}
 	if name := viper.GetString("brewfather.brewery"); name != "" {
 		tap.Beer.BreweryName = &name
 	}
@@ -170,6 +173,9 @@ func (r *queryResolver) BrewfatherBatches(ctx context.Context, state *string) ([
 				Fg:          &fg,
 				GravityUnit: &gravityUnit,
 			},
+		}
+		if b.Recipe != nil && b.Recipe.Style != nil {
+			tb[i].Beer.Style = &b.Recipe.Style.Name
 		}
 	}
 	return tb, nil

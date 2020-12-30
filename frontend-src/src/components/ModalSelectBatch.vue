@@ -6,7 +6,7 @@
       <ul v-if="loadingBatches < 1">
         <li v-for="batch in brewfatherBatches" v-bind:key="batch.id">
           <button class="button is-primary is-large is-fullwidth batch-button" v-on:click.prevent="selectBatch(batch)">
-            Batch {{batch.number}}: {{batch.beer.name}}
+            Batch {{batch.number}}: {{batch.beer.name}} ({{batch.beer.style}})
           </button>
         </li>
         <li>

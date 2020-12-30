@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/dereulenspiegel/go-brewchild v0.0.0-20201220140139-330e4d4c2ecf
+	github.com/dereulenspiegel/go-brewchild v0.0.0-20201230205811-2d17893083ee
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/jinzhu/copier v0.1.0
 	github.com/karrick/godirwalk v1.16.1 // indirect
