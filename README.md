@@ -3,6 +3,19 @@
 This a simple self hosted talist. It is intended to run on a Raspberry, Onion Omega etc.
 and serves a page which shows which homebrewed beers you have on tap.
 
+![Image of Yaktocat](screenshot.png)
+
+## Features
+
+* Display as many taps as you like and have screen space for
+* Layout even works on small (like 7") tablets (ideal for your appartement kegerator)
+* Simply choose the brewfather batch per tab with a tap on the screen
+* Beer details are loaded from brewfather
+* The pint glass changes its color based on the beer color
+* Full screen mode also enables a wake lock, so your taplist stays awake
+* Server based, so you can showcase your taplist in multiple locations
+* Completely self hosted (except for the brewfather part)
+
 ## Building
 
 ### Prerequisites
