@@ -45,6 +45,13 @@ Vue.filter('int', function(value) {
   return Math.floor(value)
 })
 
+Vue.filter('precision', function(value, precision) {
+  if (typeof value !== 'number'){
+    return value
+  }
+  return value.toFixed(precision) 
+})
+
 var wsURL = ""
 
 if(window.location.protocol === "https:") {

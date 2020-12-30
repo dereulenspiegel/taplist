@@ -23,7 +23,7 @@
         <div class="column is-narrow beer-data" v-if="hasFacts">
           <h2 v-if="tap.beer.style" class="subtitle mb-1">{{tap.beer.style}}</h2>
           <div class="level is-mobile m-0" v-if="tap.beer.abv">
-            <span class="level-left has-text-left is-uppercase has-text-weight-medium">ABV:</span> <span class="level-right ml-1 has-text-right">{{tap.beer.abv | number}}</span>
+            <span class="level-left has-text-left is-uppercase has-text-weight-medium">ABV:</span> <span class="level-right ml-1 has-text-right">{{tap.beer.abv | precision(1)}}</span>
           </div>
           <div class="level is-mobile m-0" v-if="tap.beer.ibu">
             <span class="level-left has-text-left is-uppercase has-text-weight-medium">IBU:</span><span class="level-right ml-1 has-text-right">{{tap.beer.ibu | int}} </span>
