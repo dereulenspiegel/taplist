@@ -4,11 +4,14 @@ import { createProvider } from './vue-apollo'
 import Notify from 'vue2-notify'
 import fullscreen from 'vue-fullscreen'
 import VueObserveVisibility from 'vue-observe-visibility'
+import {Loading} from 'buefy'
+import 'buefy/dist/buefy.css'
 import './fa.config'
 require('@/app.scss')
 
 Vue.config.productionTip = false
 
+Vue.use(Loading)
 Vue.use(VueObserveVisibility)
 Vue.use(fullscreen)
 Vue.use(Notify, {

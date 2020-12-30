@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-content is-clipped batch-select-modal">
       <h2 class="title">Select batch for Tap {{tapNumber}}</h2>
-      <ul>
+      <ul v-if="loadingBatches < 1">
         <li v-for="batch in brewfatherBatches" v-bind:key="batch.id">
           <button class="button is-primary is-large is-fullwidth batch-button" v-on:click.prevent="selectBatch(batch)">
             Batch {{batch.number}}: {{batch.beer.name}}
@@ -15,7 +15,7 @@
           </button>
         </li>
       </ul>
-      <b-loading :is-full-page="false" v-model="loadingBatches" :can-cancel="false"></b-loading>
+      <b-loading :is-full-page="false" v-model="showSpinner" :can-cancel="false"></b-loading>
     </div>
     <button class="modal-close is-large" aria-label="close" v-on:click.prevent="cancel"></button>
   </div>
@@ -36,7 +36,8 @@ export default {
   },
   data: function() {
     return {
-      loadingBatches: 0
+      loadingBatches: 0,
+      updatingTap: 0
     }
   },
   apollo: {
@@ -46,6 +47,11 @@ export default {
         this.showError(error)
       },
       loadingKey: 'loadingBatches'
+    }
+  },
+  computed: {
+    showSpinner: function() {
+      return this.loadingBatches > 0 || this.updatingTap > 0
     }
   },
   methods: {
@@ -62,6 +68,7 @@ export default {
       this.$emit('cancel')
     },
     setEmpty: function(){
+      this.updatingTap++
       this.$apollo.mutate({
         mutation: gql`mutation($tapId: ID!, $tapData: TapData!){
           updateTap(id: $tapId, data: $tapData){ id }
@@ -71,15 +78,19 @@ export default {
           tapData: {
             empty: true
           }
-        }
+        },
+        loadingKey: 'updatingTap'
       }).then( () => {
+        this.updatingTap--
         this.$emit('selected')
       }).catch((error) => {
+        this.updatingTap--
         this.showError(error)
         console.log("Error {}", error)
       })
     },
     selectBatch: function(batch) {
+      this.updatingTap++
       this.$apollo.mutate({
         mutation: gql`mutation($tapId: ID!, $brewfatherId: ID!) {
           setBrewfatherBatchOnTap(tapId: $tapId, brewfatherBatchID: $brewfatherId) {
@@ -89,10 +100,13 @@ export default {
         variables:{
           tapId: this.tapId,
           brewfatherId: batch.id
-        }
+        },
+        loadingKey: 'updatingTap'
       }).then( () => {
+        this.updatingTap--
         this.$emit('selected', batch);
       }).catch((error) => {
+        this.updatingTap--
         this.showError(error)
         console.log("Error {}", error)
       })
