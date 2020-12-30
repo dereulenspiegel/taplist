@@ -3,11 +3,13 @@ import App from './App.vue'
 import { createProvider } from './vue-apollo'
 import Notify from 'vue2-notify'
 import fullscreen from 'vue-fullscreen'
+import VueObserveVisibility from 'vue-observe-visibility'
 import './fa.config'
 require('@/app.scss')
 
 Vue.config.productionTip = false
 
+Vue.use(VueObserveVisibility)
 Vue.use(fullscreen)
 Vue.use(Notify, {
   itemClass: 'notification',

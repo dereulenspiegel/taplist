@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-bind:class="{'is-active': active}">
+  <div class="modal" v-bind:class="{'is-active': active}" v-observe-visibility="visibilityHasChanged">
     <div class="modal-background"></div>
     <div class="modal-content is-clipped batch-select-modal">
       <h2 class="title">Select batch for Tap {{tapNumber}}</h2>
@@ -15,6 +15,7 @@
           </button>
         </li>
       </ul>
+      <b-loading :is-full-page="false" v-model="loadingBatches" :can-cancel="false"></b-loading>
     </div>
     <button class="modal-close is-large" aria-label="close" v-on:click.prevent="cancel"></button>
   </div>
@@ -33,15 +34,26 @@ export default {
     tapNumber: Number,
     active: Boolean
   },
+  data: function() {
+    return {
+      loadingBatches: 0
+    }
+  },
   apollo: {
     brewfatherBatches: {
       query: BREWFATHER_BATCHES_QUERY,
       error: function(error) {
         this.showError(error)
-      }
+      },
+      loadingKey: 'loadingBatches'
     }
   },
   methods: {
+    visibilityHasChanged: function(isVisible) {
+      if(isVisible) {
+        this.$apollo.queries.brewfatherBatches.refetch()
+      }
+    },
     showError: function(error) {
       var msg = errUtils.errorMsg(error)
       this.$notify.danger(msg)
@@ -100,4 +112,5 @@ export default {
 .batch-button {
   margin: 5px;
 }
+
 </style>
