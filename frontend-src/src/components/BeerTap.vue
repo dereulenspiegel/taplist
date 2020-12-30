@@ -86,7 +86,6 @@ export default {
 <style>
 .beertap {
   color: black !important;
-  margin: 20px;
 }
 
 .tapnumber {
