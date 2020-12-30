@@ -1,5 +1,5 @@
 <template>
-  <div class="box beertap mb-0">
+  <div class="box beertap mb-3">
     <modal-select-batch :tapId="tap.id" :tapNumber="tap.number" :active="modal.active" @cancel="modalCancel" @selected="batchSelected"/>
     <div class="is-flex is-flex-direction-column is-flex-wrap-nowrap is-justify-content-flex-start" v-on:click.prevent="showModal">
       <div v-if="tap.beer">
