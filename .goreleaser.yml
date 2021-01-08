@@ -18,6 +18,7 @@ builds:
     - arm64
   goarm:
     - 7
+    - 6
   ignore:
     - goos: darwin
       goarch: arm
@@ -87,6 +88,25 @@ dockers:
   - "--label=org.opencontainers.image.title={{.ProjectName}}"
   - "--label=org.opencontainers.image.revision={{.FullCommit}}"
   - "--label=org.opencontainers.image.version={{.Version}}"
+- image_templates:
+  - dereulenspiegel/taplist:{{ .Version }}-armv6
+  - dereulenspiegel/taplist:latest-armv6
+  builds:
+  - main-build
+  binaries:
+  - taplist
+  dockerfile: Dockerfile.arm6
+  goos: linux
+  goarch: arm
+  goarm: 6
+  extra_files:
+  - frontend
+  build_flag_templates:
+  - "--platform=linux/arm/6"
+  - "--label=org.opencontainers.image.created={{.Date}}"
+  - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  - "--label=org.opencontainers.image.version={{.Version}}"
 
 docker_manifests:
 - name_template: dereulenspiegel/taplist:{{ .Version }}
@@ -94,11 +114,13 @@ docker_manifests:
   - dereulenspiegel/taplist:{{ .Version }}-amd64
   - dereulenspiegel/taplist:{{ .Version }}-arm64
   - dereulenspiegel/taplist:{{ .Version }}-armv7
+  - dereulenspiegel/taplist:{{ .Version }}-armv7
 - name_template: dereulenspiegel/taplist:latest
   image_templates:
   - dereulenspiegel/taplist:latest-amd64
   - dereulenspiegel/taplist:latest-arm64
   - dereulenspiegel/taplist:latest-armv7
+  - dereulenspiegel/taplist:latest-armv6
 
 archives:
 - replacements:
